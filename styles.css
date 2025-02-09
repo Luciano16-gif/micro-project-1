@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  background-color: #000;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* Score text */
+.score-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Main wrapper for the four color slices */
+.circle-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 3rem auto;
+  border-radius: 50%;
+  overflow: hidden; /* So each quarter is contained in the circle shape */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Quarter slices */
+.circle-button {
+  width: 50%;
+  height: 50%;
+  cursor: pointer;
+}
+
+.green {
+  background-color: #4CAF50;
+  border-top-left-radius: 50%;
+}
+
+.red {
+  background-color: #F44336;
+  border-top-right-radius: 50%;
+}
+
+.yellow {
+  background-color: #FFEB3B;
+  border-bottom-left-radius: 50%;
+}
+
+.blue {
+  background-color: #2196F3;
+  border-bottom-right-radius: 50%;
+}
+
+.center-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
