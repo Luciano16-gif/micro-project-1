@@ -1,66 +1,67 @@
-function compararArrays(array1, array2) {
-    let sonIguales = true;
+function compareArrays(array1, array2) {
+    let areEqual = true;
 
-    // Comparar los elementos comunes
+    // Compare the common elements
     for (let i = 0; i < array2.length; i++) {
         if (array1[i] !== array2[i]) {
-            console.log(`Diferentes en la posición ${i}: ${array1[i]} y ${array2[i]}`);
-            sonIguales = false;
-            return; // Salir de la función si hay diferencias
+            console.log(`Different at position ${i}: ${array1[i]} and ${array2[i]}`);
+            areEqual = false;
+            return; // Exit the function if there are differences
         }
     }
 
-    // Si todos los elementos comunes son iguales
-    if (sonIguales) {
-        console.log("Todos los elementos comunes son iguales.");
+    // If all common elements are equal
+    if (areEqual) {
+        console.log("All common elements are equal.");
 
-        // Si array2 es más corto que array1, añadir elementos a array2
+        // If array2 is shorter than array1, add elements to array2
         while (array2.length < array1.length) {
-            let nuevoElemento = /* array1[array2.length] */ generarNumeroAleatorio();
-            array2.push(nuevoElemento);
-            console.log(`Se añadió el elemento ${nuevoElemento} a array2.`);
-            if (sonIguales) {
-                console.log("Todos los elementos comunes son iguales.");
+            let newElement = /* array1[array2.length] */ generateRandomNumber();
+            array2.push(newElement);
+            console.log(`Element ${newElement} was added to array2.`);
+            if (areEqual) {
+                console.log("All common elements are equal.");
             }
 
-            // Verificar si el nuevo elemento es igual en ambos arrays
+            // Check if the new element is equal in both arrays
             if (array2[array2.length - 1] !== array1[array2.length - 1]) {
-                console.log(`Diferentes en la posición ${array2.length - 1}: ${array1[array2.length - 1]} y ${array2[array2.length - 1]}`);
-                return; // Salir si hay diferencias
+                console.log(`Different at position ${array2.length - 1}: ${array1[array2.length - 1]} and ${array2[array2.length - 1]}`);
+                return; // Exit if there are differences
             }
         }
 
-        // Si los arrays tienen la misma longitud y son iguales
+        // If the arrays have the same length and are equal
         if (array1.length === array2.length) {
-            // Si los arrays tienen la misma longitud
+            // If the arrays have the same length
             if (array1.length === array2.length) {
-                console.log("Los arrays son iguales. Actualizando arrays...");
+                console.log("The arrays are equal. Updating arrays...");
 
-                // Añadir un elemento a array1
-                let nuevoElemento = generarNumeroAleatorio();
-                array1.push(nuevoElemento);
-                console.log(`Se añadió el elemento ${nuevoElemento} a array1.`);
+                // Add an element to array1
+                let newElement = generateRandomNumber();
+                array1.push(newElement);
+                console.log(`Element ${newElement} was added to array1.`);
 
-                // Vaciar array2
+                // Empty array2
                 array2.length = 0;
-                console.log("array2 fue vaciado.");
+                console.log("array2 was emptied.");
+            }
         }
     }
-}
 
-    // Mostrar el estado actual de los arrays
-    console.log("Estado actual:");
+
+    // Show the current state of the arrays
+    console.log("Current state:");
     console.log("array1:", array1);
     console.log("array2:", array2);
 }
 
-function generarNumeroAleatorio() {
+function generateRandomNumber() {
     return Math.floor(Math.random() * 4);
 }
 
-// Ejemplo de uso:
+// Example usage:
 let array1 = [1, 2, 3];
 let array2 = [1];
-compararArrays(array1, array2);
+compareArrays(array1, array2);
 console.log(array1);
 console.log(array2);
