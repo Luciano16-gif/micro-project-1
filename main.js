@@ -16,7 +16,7 @@ function compararArrays(array1, array2) {
 
         // Si array2 es más corto que array1, añadir elementos a array2
         while (array2.length < array1.length) {
-            let nuevoElemento = array1[array2.length];
+            let nuevoElemento = /* array1[array2.length] */ generarNumeroAleatorio();
             array2.push(nuevoElemento);
             console.log(`Se añadió el elemento ${nuevoElemento} a array2.`);
             if (sonIguales) {
@@ -37,7 +37,7 @@ function compararArrays(array1, array2) {
                 console.log("Los arrays son iguales. Actualizando arrays...");
 
                 // Añadir un elemento a array1
-                let nuevoElemento = array1.length + 1;
+                let nuevoElemento = generarNumeroAleatorio();
                 array1.push(nuevoElemento);
                 console.log(`Se añadió el elemento ${nuevoElemento} a array1.`);
 
@@ -54,7 +54,13 @@ function compararArrays(array1, array2) {
     console.log("array2:", array2);
 }
 
+function generarNumeroAleatorio() {
+    return Math.floor(Math.random() * 4);
+}
+
 // Ejemplo de uso:
-let array1 = [1, 2, 3, 4, 5, 6, 7, 8];
-let array2 = [1, 2, 3, 4, 5, 6];
+let array1 = [1, 2, 3];
+let array2 = [1];
 compararArrays(array1, array2);
+console.log(array1);
+console.log(array2);
