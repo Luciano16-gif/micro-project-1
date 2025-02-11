@@ -9,13 +9,13 @@ const botonAmarillo = document.getElementById('yellow');
 const botonAzul = document.getElementById('blue');
 
 // Assign click events to each button
-botonVerde.addEventListener('click', () => agregarValor(0));
-botonRojo.addEventListener('click', () => agregarValor(1));
-botonAzul.addEventListener('click', () => agregarValor(2));
-botonAmarillo.addEventListener('click', () => agregarValor(3));
+botonVerde.addEventListener('click', () => addValue(0));
+botonRojo.addEventListener('click', () => addValue(1));
+botonAzul.addEventListener('click', () => addValue(2));
+botonAmarillo.addEventListener('click', () => addValue(3));
 
 // Function to add a value to the array
-function agregarValor(valor) {
+function addValue(valor) {
   array2.push(valor); // Add value to array
   console.log('Array actual:', array2); // Show the array in the console
   compareArrays(array1, array2);
@@ -52,11 +52,7 @@ function compareArrays(array1, array2) {
                 console.log("array2 was emptied.");
             }
         }
-
-        if (array2[array2.length - 1] !== array1[array2.length - 1]) {
-            console.log(`Diferentes en la posición ${array2.length - 1}: ${array1[array2.length - 1]} y ${array2[array2.length - 1]}`);
-            return; // Exit if there are diferences
-        }
+        
     }
 
 
@@ -64,6 +60,8 @@ function compareArrays(array1, array2) {
     console.log("Current state:");
     console.log("array1:", array1);
     console.log("array2:", array2);
+
+    return
     }
 
 // Function to generate a random number
