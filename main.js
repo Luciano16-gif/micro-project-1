@@ -30,6 +30,7 @@ function compareArrays(array1, array2) {
         if (array1[i] !== array2[i]) {
             console.log(`Different at position ${i}: ${array1[i]} and ${array2[i]}`);
             areEqual = false;
+            array2.length = 0;
             return; // Exit the function if there are differences
         }
     }
@@ -38,23 +39,18 @@ function compareArrays(array1, array2) {
     if (areEqual) {
         console.log("All common elements are equal.");
         if (array1.length === array2.length) {
-            // If the arrays have the same length
-            if (array1.length === array2.length) {
-                console.log("The arrays are equal. Updating arrays...");
+            console.log("The arrays are equal. Updating arrays...");
 
-                // Add an element to array1
-                let newElement = generateRandomNumber();
-                array1.push(newElement);
-                console.log(`Element ${newElement} was added to array1.`);
+            // Add an element to array1
+            let newElement = generateRandomNumber();
+            array1.push(newElement);
+            console.log(`Element ${newElement} was added to array1.`);
 
-                // Empty array2
-                array2.length = 0;
-                console.log("array2 was emptied.");
-            }
+            // Empty array2
+            array2.length = 0;
+            console.log("array2 was emptied.");
         }
-        
     }
-
 
     // Show the current state of the arrays
     console.log("Current state:");
