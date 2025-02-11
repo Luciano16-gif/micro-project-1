@@ -3,9 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <title>Simon Says</title>
-  <link rel="stylesheet" href="styles.css" />
+  <!-- CSS Links -->
+  <link rel="stylesheet" href="simonCircle.css" />
+  <link rel="stylesheet" href="startPage.css">
 </head>
 <body>
+  <!-- Start Screen -->
+  <div id="start-container">
+    <h1>Simon Says</h1>
+    <input type="text" id="user-input" placeholder="Enter your name to start">
+    <button id="start-btn">Start Game</button>
+  </div>
   <!-- Score Display -->
   <div class="score-container">
     <h1>SCORE: <span id="score-value">1</span></h1>
@@ -23,7 +31,8 @@
     <div class="center-circle" id="round-display">1</div>
   </div>
 
-  <!-- Link to external JS file -->
+  <!-- Link to external JS files -->
   <script src="main.js"></script>
+  <script src="start-menu.js"></script>
 </body>
 </html>

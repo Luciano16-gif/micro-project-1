@@ -1,3 +1,7 @@
+// -----------------------------------------
+// 1. Array functions for the game logic
+// -----------------------------------------
+
 // Arrays to store values
 let array1 = [1, 2, 3];
 let array2 = [1];
@@ -58,7 +62,7 @@ function compareArrays(array1, array2) {
     console.log("array2:", array2);
 
     return
-    }
+}
 
 // Function to generate a random number
 function generateRandomNumber() {
