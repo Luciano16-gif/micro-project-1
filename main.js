@@ -1,72 +1,73 @@
-
-// Array para almacenar los valores
+// Arrays to store values
 let array1 = [1, 2, 3];
 let array2 = [1];
 
-// Obtener los botones por su ID
+// Get the buttons by ID
 const botonVerde = document.getElementById('green');
 const botonRojo = document.getElementById('red');
 const botonAmarillo = document.getElementById('yellow');
 const botonAzul = document.getElementById('blue');
 
-// Asignar eventos de clic a cada botón
+// Assign click events to each button
 botonVerde.addEventListener('click', () => agregarValor(0));
 botonRojo.addEventListener('click', () => agregarValor(1));
 botonAzul.addEventListener('click', () => agregarValor(2));
 botonAmarillo.addEventListener('click', () => agregarValor(3));
 
-// Función para agregar el valor al array
+// Function to add a value to the array
 function agregarValor(valor) {
-  array2.push(valor); // Añadir el valor al array
-  console.log('Array actual:', array2); // Mostrar el array en la consola
-  compararArrays(array1, array2);
+  array2.push(valor); // Add value to array
+  console.log('Array actual:', array2); // Show the array in the console
+  compareArrays(array1, array2);
 }
 
-function compararArrays(array1, array2) {
-    let sonIguales = true;
+function compareArrays(array1, array2) {
+    let areEqual = true;
 
-    // Comparar los elementos comunes
+
+    // Compare the common elements
     for (let i = 0; i < array2.length; i++) {
         if (array1[i] !== array2[i]) {
-            console.log(`Diferentes en la posición ${i}: ${array1[i]} y ${array2[i]}`);
-            sonIguales = false;
-            return; // Salir de la función si hay diferencias
+            console.log(`Different at position ${i}: ${array1[i]} and ${array2[i]}`);
+            areEqual = false;
+            return; // Exit the function if there are differences
         }
     }
 
-    // Si todos los elementos comunes son iguales
-    if (sonIguales) {
-        console.log("Todos los elementos comunes son iguales.");
-
-        // Si los arrays tienen la misma longitud y son iguales
+    // If all common elements are equal
+    if (areEqual) {
+        console.log("All common elements are equal.");
         if (array1.length === array2.length) {
-            // Si los arrays tienen la misma longitud
+            // If the arrays have the same length
             if (array1.length === array2.length) {
-                console.log("Los arrays son iguales. Actualizando arrays...");
+                console.log("The arrays are equal. Updating arrays...");
 
-                // Añadir un elemento a array1
-                let nuevoElemento = generarNumeroAleatorio();
-                array1.push(nuevoElemento);
-                console.log(`Se añadió el elemento ${nuevoElemento} a array1.`);
+                // Add an element to array1
+                let newElement = generateRandomNumber();
+                array1.push(newElement);
+                console.log(`Element ${newElement} was added to array1.`);
 
-                // Vaciar array2
+                // Empty array2
                 array2.length = 0;
-                console.log("array2 fue vaciado.");
+                console.log("array2 was emptied.");
+            }
         }
 
         if (array2[array2.length - 1] !== array1[array2.length - 1]) {
             console.log(`Diferentes en la posición ${array2.length - 1}: ${array1[array2.length - 1]} y ${array2[array2.length - 1]}`);
-            return; // Salir si hay diferencias
+            return; // Exit if there are diferences
         }
     }
-}
 
-    // Mostrar el estado actual de los arrays
-    console.log("Estado actual:");
+
+    // Show the current state of the arrays
+    console.log("Current state:");
     console.log("array1:", array1);
     console.log("array2:", array2);
-}
+    }
 
-function generarNumeroAleatorio() {
+// Function to generate a random number
+function generateRandomNumber() {
     return Math.floor(Math.random() * 4);
 }
+
