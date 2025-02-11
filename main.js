@@ -1,3 +1,27 @@
+
+// Array para almacenar los valores
+let array1 = [1, 2, 3];
+let array2 = [1];
+
+// Obtener los botones por su ID
+const botonVerde = document.getElementById('green');
+const botonRojo = document.getElementById('red');
+const botonAmarillo = document.getElementById('yellow');
+const botonAzul = document.getElementById('blue');
+
+// Asignar eventos de clic a cada botón
+botonVerde.addEventListener('click', () => agregarValor(0));
+botonRojo.addEventListener('click', () => agregarValor(1));
+botonAzul.addEventListener('click', () => agregarValor(2));
+botonAmarillo.addEventListener('click', () => agregarValor(3));
+
+// Función para agregar el valor al array
+function agregarValor(valor) {
+  array2.push(valor); // Añadir el valor al array
+  console.log('Array actual:', array2); // Mostrar el array en la consola
+  compararArrays(array1, array2);
+}
+
 function compararArrays(array1, array2) {
     let sonIguales = true;
 
@@ -14,22 +38,6 @@ function compararArrays(array1, array2) {
     if (sonIguales) {
         console.log("Todos los elementos comunes son iguales.");
 
-        // Si array2 es más corto que array1, añadir elementos a array2
-        while (array2.length < array1.length) {
-            let nuevoElemento = /* array1[array2.length] */ generarNumeroAleatorio();
-            array2.push(nuevoElemento);
-            console.log(`Se añadió el elemento ${nuevoElemento} a array2.`);
-            if (sonIguales) {
-                console.log("Todos los elementos comunes son iguales.");
-            }
-
-            // Verificar si el nuevo elemento es igual en ambos arrays
-            if (array2[array2.length - 1] !== array1[array2.length - 1]) {
-                console.log(`Diferentes en la posición ${array2.length - 1}: ${array1[array2.length - 1]} y ${array2[array2.length - 1]}`);
-                return; // Salir si hay diferencias
-            }
-        }
-
         // Si los arrays tienen la misma longitud y son iguales
         if (array1.length === array2.length) {
             // Si los arrays tienen la misma longitud
@@ -45,6 +53,11 @@ function compararArrays(array1, array2) {
                 array2.length = 0;
                 console.log("array2 fue vaciado.");
         }
+
+        if (array2[array2.length - 1] !== array1[array2.length - 1]) {
+            console.log(`Diferentes en la posición ${array2.length - 1}: ${array1[array2.length - 1]} y ${array2[array2.length - 1]}`);
+            return; // Salir si hay diferencias
+        }
     }
 }
 
@@ -57,10 +70,3 @@ function compararArrays(array1, array2) {
 function generarNumeroAleatorio() {
     return Math.floor(Math.random() * 4);
 }
-
-// Ejemplo de uso:
-let array1 = [1, 2, 3];
-let array2 = [1];
-compararArrays(array1, array2);
-console.log(array1);
-console.log(array2);
