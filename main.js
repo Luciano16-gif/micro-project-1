@@ -12,11 +12,22 @@ const botonRojo = document.getElementById('red');
 const botonAmarillo = document.getElementById('yellow');
 const botonAzul = document.getElementById('blue');
 
+// Get the audio elements
+const sonidoVerde = new Audio('sonido-verde.mp3');
+const sonidoRojo = new Audio('sonido-rojo.mp3');
+const sonidoAmarillo = new Audio('sonido-amarillo.mp3');
+const sonidoAzul = new Audio('sonido-azul.mp3');
+
 // Assign click events to each button
 botonVerde.addEventListener('click', () => buttonInteraction(0, 'green'));
+botonVerde.addEventListener('click', () => sonidoVerde.play());
 botonRojo.addEventListener('click', () => buttonInteraction(1, 'red'));
+botonRojo.addEventListener('click', () => sonidoRojo.play());
 botonAzul.addEventListener('click', () => buttonInteraction(2, 'blue'));
+botonAzul.addEventListener('click', () => sonidoAzul.play());
 botonAmarillo.addEventListener('click', () => buttonInteraction(3, 'yellow'));
+botonAmarillo.addEventListener('click', () => sonidoAmarillo.play());
+
 
 // Function to handle button interactions
 function buttonInteraction(value, buttonId) {
