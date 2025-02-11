@@ -13,16 +13,41 @@ const botonAmarillo = document.getElementById('yellow');
 const botonAzul = document.getElementById('blue');
 
 // Assign click events to each button
-botonVerde.addEventListener('click', () => addValue(0));
-botonRojo.addEventListener('click', () => addValue(1));
-botonAzul.addEventListener('click', () => addValue(2));
-botonAmarillo.addEventListener('click', () => addValue(3));
+botonVerde.addEventListener('click', () => buttonInteraction(0, 'green'));
+botonRojo.addEventListener('click', () => buttonInteraction(1, 'red'));
+botonAzul.addEventListener('click', () => buttonInteraction(2, 'blue'));
+botonAmarillo.addEventListener('click', () => buttonInteraction(3, 'yellow'));
+
+// Function to handle button interactions
+function buttonInteraction(value, buttonId) {
+    addValue(value);
+    flashButton(buttonId);
+}
 
 // Function to add a value to the array
 function addValue(valor) {
   array2.push(valor); // Add value to array
+  
   console.log('Array actual:', array2); // Show the array in the console
   compareArrays(array1, array2);
+}
+
+// Function to flash a given button element by its ID
+function flashButton(buttonId) {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+    
+    // Remove flash class if already present 
+    button.classList.remove('flash');
+    void button.offsetWidth; // Force reflow
+  
+    // Add the flash class to start the animation
+    button.classList.add('flash');
+  
+    // Remove the class after the animation completes (0.3s here)
+    setTimeout(() => {
+      button.classList.remove('flash');
+    }, 300);
 }
 
 function compareArrays(array1, array2) {
@@ -69,3 +94,5 @@ function generateRandomNumber() {
     return Math.floor(Math.random() * 4);
 }
 
+
+  
