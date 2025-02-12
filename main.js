@@ -13,38 +13,46 @@ const botonRojo = document.getElementById('red');
 const botonAmarillo = document.getElementById('yellow');
 const botonAzul = document.getElementById('blue');
 
-// Get the audio elements
-const sonidoVerde = new Audio('./assets/sonido-verde.mp3');
-const sonidoRojo = new Audio('./assets/sonido-rojo.mp3');
-const sonidoAmarillo = new Audio('./assets/sonido-amarillo.mp3');
-const sonidoAzul = new Audio('./assets/sonido-azul.mp3');
+// Audio file paths
+const audioFiles = {
+    green: './assets/sonido-verde.mp3',
+    red: './assets/sonido-rojo.mp3',
+    yellow: './assets/sonido-amarillo.mp3',
+    blue: './assets/sonido-azul.mp3'
+};
 
 // Assign click events to each button
 botonVerde.addEventListener('click', () => {
-    buttonInteraction(0, 'green')
-    sonidoVerde.play();
+    buttonInteraction(0, 'green');
+    playSound(audioFiles.green);
 });
 
 botonRojo.addEventListener('click', () => {
-    buttonInteraction(1, 'red')
-    sonidoRojo.play();
+    buttonInteraction(1, 'red');
+    playSound(audioFiles.red);
 });
 
 botonAzul.addEventListener('click', () => {
-    buttonInteraction(2, 'blue')
-    sonidoAzul.play();
+    buttonInteraction(2, 'blue');
+    playSound(audioFiles.blue);
 });
 
 botonAmarillo.addEventListener('click', () => {
-    buttonInteraction(3, 'yellow')
-    sonidoAmarillo.play();
+    buttonInteraction(3, 'yellow');
+    playSound(audioFiles.yellow);
 });
-
 
 // Function to handle button interactions
 function buttonInteraction(value, buttonId) {
     addValue(value);
     flashButton(buttonId);
+}
+
+// Function to play sound, this one fixes the problem with the audio not playing if its already playing
+function playSound(soundPath) {
+    const audio = new Audio(soundPath);
+    audio.play()
+        .catch(error => console.error('Error playing sound:', error));
 }
 
 // Function to flash a given button element by its ID
