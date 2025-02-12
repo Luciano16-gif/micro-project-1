@@ -1,66 +1,80 @@
+/* Start screen container styles */
 #start-container {
-    position: fixed;             /* Fixed to make sure it stays on the same place */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* This is to abscure the background but keeping it visible */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;               /* High z-index to block clicks on the game */
-    text-align: center;
-    padding: 2rem;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  text-align: center;
+  padding: 2rem;
+}
+
 /* Title */
 #start-container h1 {
-    color: #fff;
-    margin-bottom: 1.5rem;
-    font-size: 3rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 3rem;
 }
-  
-  /* Input field */
+
+/* Input field */
 #user-input {
-    padding: 0.8rem 1rem;
-    font-size: 1.2rem;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    width: 80%;
-    max-width: 300px;
-    text-align: center;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    outline: none;
+  padding: 0.8rem 1rem;
+  font-size: 1.2rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
 }
-  
-/* Focus effect for the input */
+
+/* Input focus effect */
 #user-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
-  
+
 /* Start button */
 #start-btn {
-    margin-top: 1rem;
-    padding: 0.8rem 1.5rem;
-    font-size: 1.2rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-  
-/* Hover effect for the start button */
+
+/* Hover effect for start button */
 #start-btn:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
-  
-/* Fade-out animation for when the start screen is dismissed */
+
+/* Fade-out effect when dismissing start screen */
 .fade-out {
-    opacity: 0;
-    transition: opacity 0.4s ease;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
-  
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+  #start-container h1 {
+    font-size: 2.5rem;
+  }
+  #user-input {
+    font-size: 1rem;
+  }
+  #start-btn {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+  }
+}

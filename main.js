@@ -8,10 +8,10 @@ let array2 = [1];
 
 
 // Get the buttons by ID
-const botonVerde = document.getElementById('green');
-const botonRojo = document.getElementById('red');
-const botonAmarillo = document.getElementById('yellow');
-const botonAzul = document.getElementById('blue');
+const greenButton = document.getElementById('green');
+const redButton = document.getElementById('red');
+const yellowButton = document.getElementById('yellow');
+const blueButton = document.getElementById('blue');
 
 // Audio file paths
 const audioFiles = {
@@ -22,22 +22,22 @@ const audioFiles = {
 };
 
 // Assign click events to each button
-botonVerde.addEventListener('click', () => {
+greenButton.addEventListener('click', () => {
     buttonInteraction(0, 'green');
     playSound(audioFiles.green);
 });
 
-botonRojo.addEventListener('click', () => {
+redButton.addEventListener('click', () => {
     buttonInteraction(1, 'red');
     playSound(audioFiles.red);
 });
 
-botonAzul.addEventListener('click', () => {
+blueButton.addEventListener('click', () => {
     buttonInteraction(2, 'blue');
     playSound(audioFiles.blue);
 });
 
-botonAmarillo.addEventListener('click', () => {
+yellowButton.addEventListener('click', () => {
     buttonInteraction(3, 'yellow');
     playSound(audioFiles.yellow);
 });
