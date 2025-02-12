@@ -1,10 +1,11 @@
-// -----------------------------------------
-// 1. Array functions for the game logic
-// -----------------------------------------
-
 // Arrays to store values
 let array1 = [1, 2, 3];
 let array2 = [1];
+
+// -----------------------------------------
+// 1. Button functions
+// -----------------------------------------
+
 
 // Get the buttons by ID
 const botonVerde = document.getElementById('green');
@@ -13,34 +14,37 @@ const botonAmarillo = document.getElementById('yellow');
 const botonAzul = document.getElementById('blue');
 
 // Get the audio elements
-const sonidoVerde = new Audio('sonido-verde.mp3');
-const sonidoRojo = new Audio('sonido-rojo.mp3');
-const sonidoAmarillo = new Audio('sonido-amarillo.mp3');
-const sonidoAzul = new Audio('sonido-azul.mp3');
+const sonidoVerde = new Audio('./assets/sonido-verde.mp3');
+const sonidoRojo = new Audio('./assets/sonido-rojo.mp3');
+const sonidoAmarillo = new Audio('./assets/sonido-amarillo.mp3');
+const sonidoAzul = new Audio('./assets/sonido-azul.mp3');
 
 // Assign click events to each button
-botonVerde.addEventListener('click', () => buttonInteraction(0, 'green'));
-botonVerde.addEventListener('click', () => sonidoVerde.play());
-botonRojo.addEventListener('click', () => buttonInteraction(1, 'red'));
-botonRojo.addEventListener('click', () => sonidoRojo.play());
-botonAzul.addEventListener('click', () => buttonInteraction(2, 'blue'));
-botonAzul.addEventListener('click', () => sonidoAzul.play());
-botonAmarillo.addEventListener('click', () => buttonInteraction(3, 'yellow'));
-botonAmarillo.addEventListener('click', () => sonidoAmarillo.play());
+botonVerde.addEventListener('click', () => {
+    buttonInteraction(0, 'green')
+    sonidoVerde.play();
+});
+
+botonRojo.addEventListener('click', () => {
+    buttonInteraction(1, 'red')
+    sonidoRojo.play();
+});
+
+botonAzul.addEventListener('click', () => {
+    buttonInteraction(2, 'blue')
+    sonidoAzul.play();
+});
+
+botonAmarillo.addEventListener('click', () => {
+    buttonInteraction(3, 'yellow')
+    sonidoAmarillo.play();
+});
 
 
 // Function to handle button interactions
 function buttonInteraction(value, buttonId) {
     addValue(value);
     flashButton(buttonId);
-}
-
-// Function to add a value to the array
-function addValue(valor) {
-  array2.push(valor); // Add value to array
-  
-  console.log('Array actual:', array2); // Show the array in the console
-  compareArrays(array1, array2);
 }
 
 // Function to flash a given button element by its ID
@@ -59,6 +63,24 @@ function flashButton(buttonId) {
     setTimeout(() => {
       button.classList.remove('flash');
     }, 300);
+}
+
+// -----------------------------------------
+// 2. Array functions for the game logic
+// -----------------------------------------
+
+
+// Function to generate a random number
+function generateRandomNumber() {
+    return Math.floor(Math.random() * 4);
+}
+
+// Function to add a value to the array
+function addValue(valor) {
+    array2.push(valor); // Add value to array
+    
+    console.log('Array actual:', array2); // Show the array in the console
+    compareArrays(array1, array2);
 }
 
 function compareArrays(array1, array2) {
@@ -100,10 +122,6 @@ function compareArrays(array1, array2) {
     return
 }
 
-// Function to generate a random number
-function generateRandomNumber() {
-    return Math.floor(Math.random() * 4);
-}
 
 
   

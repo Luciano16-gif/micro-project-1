@@ -102,6 +102,7 @@ body {
   font-size: 1.5rem;
   font-weight: bold;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  z-index: 99;
 }
 
 /* --- Responsive Adjustments for Mobile --- */
@@ -116,6 +117,7 @@ body {
     width: 23vw;
     height: 23vw;
     font-size: calc(23vw * 0.5);
+    z-index: 99;
   }
 }
 
