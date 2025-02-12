@@ -59,6 +59,22 @@
   background-color: #0056b3;
 }
 
+/* #countdown-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  text-align: center;
+  padding: 2rem;
+} */
+
 /* Fade-out effect when dismissing start screen */
 .fade-out {
   opacity: 0;

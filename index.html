@@ -7,6 +7,24 @@
   <!-- CSS Links -->
   <link rel="stylesheet" href="simonCircle.css" />
   <link rel="stylesheet" href="startPage.css">
+
+  <style>
+  
+    /* Styles for the iframe container */
+    #iframe-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    iframe {
+        width: 400px; /* Adjust the width as needed */
+        height: 300px;
+        border: none;
+    }
+
+  </style>
+
 </head>
 <body>
   <!-- Start Screen -->
@@ -19,6 +37,10 @@
   <div class="score-container">
     <h1>SCORE: <span id="score-value">1</span></h1>
   </div>
+
+  <!-- <div class="counter-container">
+    <span id="countdown-container"></span>
+  </div> -->
 
   <!-- Main Simon Container -->
   <div class="circle-container">
@@ -35,5 +57,10 @@
   <!-- Link to external JS files -->
   <script src="main.js"></script>
   <script src="start-menu.js"></script>
+
+  <!-- Iframe Container -->
+  <div id="iframe-container">
+    <iframe src="counter.html"></iframe>
+  </div>
 </body>
 </html>

@@ -5,6 +5,7 @@
 const startContainer = document.getElementById("start-container");
 const userInput = document.getElementById("user-input");
 const startButton = document.getElementById("start-btn");
+const showCounter = document.getElementById('countdown-container');
   
 // Function to handle starting the game
 function startGame() {
@@ -27,6 +28,16 @@ userInput.addEventListener("keydown", function (event) {
         startGame();
     }
 });
+
+function showCounter(){
+    const name = document.getElementById('user-input').value.trim();
+    const iframeContainer = document.getElementById('iframe-container');
+    if (name !== "") {
+        mostrarOverlay();
+        iframeContainer.style.display = 'block';
+    }
+    
+}
   
 // Listen for a click on the start button
 startButton.addEventListener("click", startGame);

@@ -1,6 +1,6 @@
 // Arrays to store values
-let array1 = [1, 2, 3];
-let array2 = [1];
+let array1 = [0];
+let array2 = [];
 
 // -----------------------------------------
 // 1. Button functions
@@ -129,6 +129,8 @@ function compareArrays(array1, array2) {
 
     return
 }
+
+
 
 
 
