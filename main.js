@@ -1,5 +1,5 @@
 // Arrays to store values
-let arrayPC = [0, 1, 2, 3];
+let arrayPC = [0];
 let arrayPlayer = [];
 let isButtonsEnabled = false; // Flag to control button interactions
 
@@ -117,24 +117,29 @@ function compareArrays(arrayPC, arrayPlayer) {
     // If all common elements are equal
     if (areEqual) {
         console.log("All common elements are equal.");
-        if (arrayPC.length === arrayPlayer.length) {
-            console.log("The arrays are equal. Updating arrays...");
-
-            // Add an element to arrayPC
-            let newElement = generateRandomNumber();
-            arrayPC.push(newElement);
-            console.log(`Element ${newElement} was added to arrayPC.`);
-            arrayPlayer.length = 0; 
-            setTimeout(() => {
-                startGame(arrayPC, arrayPlayer);
-            }, 400);
-        }
+        setTimeout(() => {
+            if (arrayPC.length === arrayPlayer.length) {
+                console.log("The arrays are equal. Updating arrays...");
+    
+                // Add an element to arrayPC
+                let newElement = generateRandomNumber();
+                arrayPC.push(newElement);
+                console.log(`Element ${newElement} was added to arrayPC.`);
+                arrayPlayer.length = 0; 
+                setTimeout(() => {
+                    startGame(arrayPC, arrayPlayer);
+                }, 400);
+            }
+        }, 400);
+        
     }
 
     // Show the current state of the arrays
     console.log("Current state:");
     console.log("arrayPC:", arrayPC);
     console.log("arrayPlayer:", arrayPlayer);
+    userScore(arrayPC, arrayPlayer);
+    
 
     return;
 }
@@ -146,6 +151,8 @@ function compareArrays(arrayPC, arrayPlayer) {
 const startContainer = document.getElementById("start-container");
 const userInput = document.getElementById("user-input");
 const startButton = document.getElementById("start-btn");
+const maxScore = document.getElementById("score-value");
+const currentScore = document.getElementById("round-display");
 
 // Function to handle starting the game
 function getUser() {
@@ -242,6 +249,20 @@ function startGame(arrayPC, arrayPlayer) {
         i++;
     }, 700)
     compareArrays(arrayPC, arrayPlayer);
+}
+
+
+// Function to show the score
+function userScore(arrayPC, arrayPlayer) {
+    for(let i = 0; i < arrayPC.length; i++) {
+        maxScore.textContent = i;
+    }
+    for(let i = 0; i < arrayPlayer.length; i++) {
+        currentScore.textContent = i + 1;
+    }
+    if(arrayPC.length === arrayPlayer.length) {
+        currentScore.textContent = 0;
+    }
 }
 
   
