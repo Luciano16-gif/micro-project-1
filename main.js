@@ -1,6 +1,7 @@
 // Arrays to store values
 let arrayPC = [0, 1, 2, 3];
 let arrayPlayer = [];
+let isButtonsEnabled = false; // Flag to control button interactions
 
 // -----------------------------------------
 // 1. Button functions
@@ -23,21 +24,25 @@ const audioFiles = {
 
 // Assign click events to each button
 greenButton.addEventListener('click', () => {
+    if (!isButtonsEnabled) return; 
     buttonInteraction(0, 'green');
     playSound(audioFiles.green);
 });
 
 redButton.addEventListener('click', () => {
+    if (!isButtonsEnabled) return;
     buttonInteraction(1, 'red');
     playSound(audioFiles.red);
 });
 
 blueButton.addEventListener('click', () => {
+    if (!isButtonsEnabled) return;
     buttonInteraction(2, 'blue');
     playSound(audioFiles.blue);
 });
 
 yellowButton.addEventListener('click', () => {
+    if (!isButtonsEnabled) return;
     buttonInteraction(3, 'yellow');
     playSound(audioFiles.yellow);
 });
@@ -73,20 +78,10 @@ function flashButton(buttonId) {
     }, 300);
 }
 
-// Function to disable buttons
-// function disableButtons(boolean) {
-//     if(boolean == true){
-//         greenButton.disabled = true;
-//         redButton.disabled = true;
-//         blueButton.disabled = true;                      Todavía no funciona
-//         yellowButton.disabled = true;
-//     } else {
-//         greenButton.disabled = false;
-//         redButton.disabled = false;
-//         blueButton.disabled = false;
-//         yellowButton.disabled = false;
-//     }
-// }
+function toggleButtons(enable) {
+    isButtonsEnabled = enable;
+}
+
 
 // -----------------------------------------
 // 2. Array functions for the game logic
@@ -109,7 +104,6 @@ function addValue(valor) {
 function compareArrays(arrayPC, arrayPlayer) {
     
     let areEqual = true;
-
 
     // Compare the common elements
     for (let i = 0; i < arrayPlayer.length; i++) {
@@ -218,11 +212,14 @@ function startCountdown() {
 // 5. Make the game work
 // -----------------------------------------
 
-function startGame(arrayPC, arrayPlayer) {
+function startGame(arrayPC, arrayPlayer) { 
+    toggleButtons(false);
     let i = 0;
     const interval = setInterval(() => {
         if (i > arrayPC.length - 1) {
             clearInterval(interval);
+            toggleButtons(true);
+            console.log(isButtonsEnabled);
         }
         switch(arrayPC[i]) {
             case 0:
@@ -244,7 +241,6 @@ function startGame(arrayPC, arrayPlayer) {
         }
         i++;
     }, 700)
-
     compareArrays(arrayPC, arrayPlayer);
 }
 
