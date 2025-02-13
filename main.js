@@ -185,7 +185,7 @@ function startCountdown() {
 
     let count = 3;
     countdownElement.textContent = count;
-    countdownElement.classList.remove('fade-out', 'start'); // Reset classes if needed
+    countdownElement.classList.remove('fade-out', 'start'); // Reset classes just un case
     count--;
 
     const interval = setInterval(() => {
