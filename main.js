@@ -73,6 +73,21 @@ function flashButton(buttonId) {
     }, 300);
 }
 
+// Function to disable buttons
+// function disableButtons(boolean) {
+//     if(boolean == true){
+//         greenButton.disabled = true;
+//         redButton.disabled = true;
+//         blueButton.disabled = true;                      Todavía no funciona
+//         yellowButton.disabled = true;
+//     } else {
+//         greenButton.disabled = false;
+//         redButton.disabled = false;
+//         blueButton.disabled = false;
+//         yellowButton.disabled = false;
+//     }
+// }
+
 // -----------------------------------------
 // 2. Array functions for the game logic
 // -----------------------------------------
@@ -115,6 +130,10 @@ function compareArrays(arrayPC, arrayPlayer) {
             let newElement = generateRandomNumber();
             arrayPC.push(newElement);
             console.log(`Element ${newElement} was added to arrayPC.`);
+            arrayPlayer.length = 0; 
+            setTimeout(() => {
+                startGame(arrayPC, arrayPlayer);
+            }, 400);
         }
     }
 
@@ -212,7 +231,7 @@ function startGame(arrayPC, arrayPlayer) {
                 break;
             case 1:
                 flashButton("red");
-                playSound(audioFiles.green);
+                playSound(audioFiles.red);
                 break;
             case 2:
                 flashButton("blue");
@@ -226,6 +245,7 @@ function startGame(arrayPC, arrayPlayer) {
         i++;
     }, 700)
 
+    compareArrays(arrayPC, arrayPlayer);
 }
 
   
