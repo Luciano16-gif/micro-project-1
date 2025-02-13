@@ -7,24 +7,6 @@
   <!-- CSS Links -->
   <link rel="stylesheet" href="simonCircle.css" />
   <link rel="stylesheet" href="startPage.css">
-
-  <style>
-  
-    /* Styles for the iframe container */
-    #iframe-container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-    iframe {
-        width: 400px; /* Adjust the width as needed */
-        height: 300px;
-        border: none;
-    }
-
-  </style>
-
 </head>
 <body>
   <!-- Start Screen -->
@@ -33,34 +15,28 @@
     <input type="text" id="user-input" placeholder="Enter your name to start">
     <button id="start-btn">Start Game</button>
   </div>
+
   <!-- Score Display -->
   <div class="score-container">
     <h1>SCORE: <span id="score-value">1</span></h1>
   </div>
 
-  <!-- <div class="counter-container">
-    <span id="countdown-container"></span>
-  </div> -->
-
   <!-- Main Simon Container -->
   <div class="circle-container">
-    <!-- Each quadrant of the Simon circle -->
     <div class="circle-button green" id="green"></div>
     <div class="circle-button red" id="red"></div>
     <div class="circle-button yellow" id="yellow"></div>
     <div class="circle-button blue" id="blue"></div>
-
-    <!-- Center circle (e.g., can show current round) -->
     <div class="center-circle" id="round-display">1</div>
   </div>
 
-  <!-- Link to external JS files -->
+  <!-- Countdown Overlay (initially hidden) -->
+  <div id="countdown-overlay" style="display: none;">
+    <div id="countdown">3</div>
+  </div>
+
+  <!-- External JS files -->
   <script src="main.js"></script>
   <script src="start-menu.js"></script>
-
-  <!-- Iframe Container -->
-  <div id="iframe-container">
-    <iframe src="counter.html"></iframe>
-  </div>
 </body>
 </html>
