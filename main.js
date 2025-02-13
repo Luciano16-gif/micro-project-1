@@ -1,6 +1,6 @@
 // Arrays to store values
-let array1 = [0];
-let array2 = [];
+let arrayPC = [0];
+let arrayPlayer = [];
 
 // -----------------------------------------
 // 1. Button functions
@@ -85,22 +85,28 @@ function generateRandomNumber() {
 
 // Function to add a value to the array
 function addValue(valor) {
-    array2.push(valor); // Add value to array
+    arrayPlayer.push(valor); // Add value to array
     
-    console.log('Array actual:', array2); // Show the array in the console
-    compareArrays(array1, array2);
+    console.log('Array actual:', arrayPlayer); // Show the array in the console
+    compareArrays(arrayPC, arrayPlayer);
 }
 
-function compareArrays(array1, array2) {
+function compareArrays(arrayPC, arrayPlayer) {
+
+    if (arrayPC.length < arrayPlayer.length) {
+        console.log("The arrays are not equal.");
+        return;
+    }
+    
     let areEqual = true;
 
 
     // Compare the common elements
-    for (let i = 0; i < array2.length; i++) {
-        if (array1[i] !== array2[i]) {
-            console.log(`Different at position ${i}: ${array1[i]} and ${array2[i]}`);
+    for (let i = 0; i < arrayPlayer.length; i++) {
+        if (arrayPC[i] !== arrayPlayer[i]) {
+            console.log(`Different at position ${i}: ${arrayPC[i]} and ${arrayPlayer[i]}`);
             areEqual = false;
-            array2.length = 0;
+            arrayPlayer.length = 0;
             return; // Exit the function if there are differences
         }
     }
@@ -108,24 +114,24 @@ function compareArrays(array1, array2) {
     // If all common elements are equal
     if (areEqual) {
         console.log("All common elements are equal.");
-        if (array1.length === array2.length) {
+        if (arrayPC.length === arrayPlayer.length) {
             console.log("The arrays are equal. Updating arrays...");
 
-            // Add an element to array1
+            // Add an element to arrayPC
             let newElement = generateRandomNumber();
-            array1.push(newElement);
-            console.log(`Element ${newElement} was added to array1.`);
+            arrayPC.push(newElement);
+            console.log(`Element ${newElement} was added to arrayPC.`);
 
-            // Empty array2
-            array2.length = 0;
-            console.log("array2 was emptied.");
+            // Empty arrayPlayer
+            arrayPlayer.length = 0;
+            console.log("arrayPlayer was emptied.");
         }
     }
 
     // Show the current state of the arrays
     console.log("Current state:");
-    console.log("array1:", array1);
-    console.log("array2:", array2);
+    console.log("arrayPC:", arrayPC);
+    console.log("arrayPlayer:", arrayPlayer);
 
     return
 }
