@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simon Says</title>
   <!-- CSS Links -->
-  <link rel="stylesheet" href="simonCircle.css" />
-  <link rel="stylesheet" href="startPage.css">
+  <link rel="stylesheet" href="./styles/simonCircle.css" />
+  <link rel="stylesheet" href="./styles/startPage.css">
+  <link rel="stylesheet" href="./styles/loseScreen.css">
 </head>
 <body>
   <!-- Start Screen -->
@@ -34,6 +35,13 @@
   <div id="countdown-overlay" style="display: none;">
     <div id="countdown">3</div>
   </div>
+
+    <!-- Lose Screen (initially hidden) -->
+    <div id="lose-screen" style="display: none;">
+      <h1>Game Over</h1>
+      <p>Skill issue, get good</p>
+      <button id="try-again-btn">Try Again</button>
+    </div>
 
   <!-- External JS files -->
   <script src="main.js"></script>

@@ -1,12 +1,12 @@
 // Arrays to store values
-let arrayPC = [0, 1, 2, 3];
+let arrayPC = [0]; // starts with 0 so it always starts with green
 let arrayPlayer = [];
 let isButtonsEnabled = false; // Flag to control button interactions
+let score = 1; // Initialize score
 
 // -----------------------------------------
 // 1. Button functions
 // -----------------------------------------
-
 
 // Get the buttons by ID
 const greenButton = document.getElementById('green');
@@ -53,11 +53,10 @@ function buttonInteraction(value, buttonId) {
     flashButton(buttonId);
 }
 
-// Function to play sound, this one fixes the problem with the audio not playing if its already playing
+// Function to play sound
 function playSound(soundPath) {
     const audio = new Audio(soundPath);
-    audio.play()
-        .catch(error => console.error('Error playing sound:', error));
+    audio.play().catch(error => console.error('Error playing sound:', error));
 }
 
 // Function to flash a given button element by its ID
@@ -82,60 +81,59 @@ function toggleButtons(enable) {
     isButtonsEnabled = enable;
 }
 
-
 // -----------------------------------------
 // 2. Array functions for the game logic
 // -----------------------------------------
-
 
 // Function to generate a random number
 function generateRandomNumber() {
     return Math.floor(Math.random() * 4);
 }
 
-// Function to add a value to the array
+// Function to add a value to the player's array
 function addValue(valor) {
-    arrayPlayer.push(valor); // Add value to player array
-    
-    console.log('Array actual:', arrayPlayer); // Show the array in the console
+    arrayPlayer.push(valor);
+    console.log('Array actual:', arrayPlayer);
     compareArrays(arrayPC, arrayPlayer);
 }
 
 function compareArrays(arrayPC, arrayPlayer) {
-    
-    let areEqual = true;
+
+    let areEqual = true; // This in theory isnt needed but lets keep it just in case
 
     // Compare the common elements
     for (let i = 0; i < arrayPlayer.length; i++) {
         if (arrayPC[i] !== arrayPlayer[i]) {
             console.log(`Different at position ${i}: ${arrayPC[i]} and ${arrayPlayer[i]}`);
-            areEqual = false;
             arrayPlayer.length = 0;
+            areEqual = false; 
+            showLoseScreen();
+            return; 
         }
     }
 
-    // If all common elements are equal
-    if (areEqual) {
-        console.log("All common elements are equal.");
-        if (arrayPC.length === arrayPlayer.length) {
-            console.log("The arrays are equal. Updating arrays...");
+    // If all common elements are equal and the round is complete
+    if ((arrayPC.length === arrayPlayer.length) && areEqual) {
+        console.log("The arrays are equal. Updating arrays...");
 
-            // Add an element to arrayPC
-            let newElement = generateRandomNumber();
-            arrayPC.push(newElement);
-            console.log(`Element ${newElement} was added to arrayPC.`);
-            arrayPlayer.length = 0; 
-            setTimeout(() => {
-                startGame(arrayPC, arrayPlayer);
-            }, 400);
-        }
+        score++; // Increment score
+        document.getElementById('score-value').textContent = score;
+
+        // Add an element to arrayPC
+        let newElement = generateRandomNumber();
+        arrayPC.push(newElement);
+        console.log(`Element ${newElement} was added to arrayPC.`);
+
+        // Reset arrayPlayer
+        arrayPlayer.length = 0; 
+        setTimeout(() => {
+            showPattern(arrayPC);
+        }, 400);
     }
 
-    // Show the current state of the arrays
     console.log("Current state:");
     console.log("arrayPC:", arrayPC);
     console.log("arrayPlayer:", arrayPlayer);
-
     return;
 }
 
@@ -147,7 +145,6 @@ const startContainer = document.getElementById("start-container");
 const userInput = document.getElementById("user-input");
 const startButton = document.getElementById("start-btn");
 
-// Function to handle starting the game
 function getUser() {
     const name = userInput.value.trim();
     if (name === "") {
@@ -162,22 +159,19 @@ function getUser() {
         startCountdown(); // Begin the countdown after the start screen fades
     }, 400);
 }
-  
-// Listen for the Enter key on the input field
+
 userInput.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         getUser();
     }
 });
 
-// Listen for a click on the start button
 startButton.addEventListener("click", getUser);
 
 // -----------------------------------------
 // 4. Countdown logic 
 // -----------------------------------------
 
-// Countdown Function
 function startCountdown() {
     const countdownOverlay = document.getElementById('countdown-overlay');
     const countdownElement = document.getElementById('countdown');
@@ -185,7 +179,7 @@ function startCountdown() {
 
     let count = 3;
     countdownElement.textContent = count;
-    countdownElement.classList.remove('fade-out', 'start'); // Reset classes just un case
+    countdownElement.classList.remove('fade-out', 'start'); // Reset classes
     count--;
 
     const interval = setInterval(() => {
@@ -201,7 +195,7 @@ function startCountdown() {
                 // Hide the countdown overlay after fade-out
                 setTimeout(() => {
                     countdownOverlay.style.display = 'none';
-                    startGame(arrayPC, arrayPlayer);
+                    showPattern(arrayPC);
                 }, 500);
             }, 1000);
         }
@@ -209,17 +203,16 @@ function startCountdown() {
 }
 
 // -----------------------------------------
-// 5. Make the game work
+// 5. Make the game work (show pattern)
 // -----------------------------------------
 
-function startGame(arrayPC, arrayPlayer) { 
+function showPattern(arrayPC) { 
     toggleButtons(false);
     let i = 0;
     const interval = setInterval(() => {
         if (i > arrayPC.length - 1) {
             clearInterval(interval);
             toggleButtons(true);
-            console.log(isButtonsEnabled);
         }
         switch(arrayPC[i]) {
             case 0:
@@ -240,8 +233,32 @@ function startGame(arrayPC, arrayPlayer) {
                 break;
         }
         i++;
-    }, 700)
-    compareArrays(arrayPC, arrayPlayer);
+    }, 700);
 }
 
-  
+// -----------------------------------------
+// 6. Lose screen logic
+// -----------------------------------------
+
+function showLoseScreen() {
+    toggleButtons(false);
+    const loseScreen = document.getElementById('lose-screen');
+    loseScreen.style.display = 'flex';
+}
+
+
+function resetGame() {
+    // Reset score and update display
+    score = 1;
+    document.getElementById('score-value').textContent = score;
+    // Reset game arrays
+    arrayPC = [0, 1, 2, 3];
+    arrayPlayer = [];
+    // Hide the lose screen
+    document.getElementById('lose-screen').style.display = 'none';
+    // Restart the game (using the countdown)
+    startCountdown();
+}
+
+// Reset the game on try again button click
+document.getElementById('try-again-btn').addEventListener('click', resetGame);
