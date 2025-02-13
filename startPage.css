@@ -65,7 +65,7 @@
     font-size: 2.5rem;
   }
   #user-input {
-    font-size: 1rem;
+    font-size: 0.9rem; /* if we dont do this the placeholder text will get ocluded */
   }
   #start-btn {
     font-size: 1rem;

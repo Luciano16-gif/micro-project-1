@@ -73,6 +73,21 @@ function flashButton(buttonId) {
     }, 300);
 }
 
+// Function to disable buttons
+// function disableButtons(boolean) {
+//     if(boolean == true){
+//         greenButton.disabled = true;
+//         redButton.disabled = true;
+//         blueButton.disabled = true;                      Todavía no funciona
+//         yellowButton.disabled = true;
+//     } else {
+//         greenButton.disabled = false;
+//         redButton.disabled = false;
+//         blueButton.disabled = false;
+//         yellowButton.disabled = false;
+//     }
+// }
+
 // -----------------------------------------
 // 2. Array functions for the game logic
 // -----------------------------------------
@@ -85,18 +100,13 @@ function generateRandomNumber() {
 
 // Function to add a value to the array
 function addValue(valor) {
-    arrayPlayer.push(valor); // Add value to array
+    arrayPlayer.push(valor); // Add value to player array
     
     console.log('Array actual:', arrayPlayer); // Show the array in the console
     compareArrays(arrayPC, arrayPlayer);
 }
 
 function compareArrays(arrayPC, arrayPlayer) {
-
-    if (arrayPC.length < arrayPlayer.length) {
-        console.log("The arrays are not equal.");
-        return;
-    }
     
     let areEqual = true;
 
@@ -107,7 +117,6 @@ function compareArrays(arrayPC, arrayPlayer) {
             console.log(`Different at position ${i}: ${arrayPC[i]} and ${arrayPlayer[i]}`);
             areEqual = false;
             arrayPlayer.length = 0;
-            return; // Exit the function if there are differences
         }
     }
 
@@ -121,10 +130,10 @@ function compareArrays(arrayPC, arrayPlayer) {
             let newElement = generateRandomNumber();
             arrayPC.push(newElement);
             console.log(`Element ${newElement} was added to arrayPC.`);
-
-            // Empty arrayPlayer
-            arrayPlayer.length = 0;
-            console.log("arrayPlayer was emptied.");
+            arrayPlayer.length = 0; 
+            setTimeout(() => {
+                startGame(arrayPC, arrayPlayer);
+            }, 400);
         }
     }
 
@@ -133,11 +142,110 @@ function compareArrays(arrayPC, arrayPlayer) {
     console.log("arrayPC:", arrayPC);
     console.log("arrayPlayer:", arrayPlayer);
 
-    return
+    return;
 }
 
+// -----------------------------------------
+// 3. Start the game with a name 
+// -----------------------------------------
 
+const startContainer = document.getElementById("start-container");
+const userInput = document.getElementById("user-input");
+const startButton = document.getElementById("start-btn");
 
+// Function to handle starting the game
+function getUser() {
+    const name = userInput.value.trim();
+    if (name === "") {
+        alert("Please enter your name to start the game.");
+        return;
+    }
+  
+    // Fade-out effect before hiding the start screen
+    startContainer.classList.add("fade-out");
+    setTimeout(() => {
+        startContainer.style.display = "none";
+        startCountdown(); // Begin the countdown after the start screen fades
+    }, 400);
+}
+  
+// Listen for the Enter key on the input field
+userInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        getUser();
+    }
+});
 
+// Listen for a click on the start button
+startButton.addEventListener("click", getUser);
+
+// -----------------------------------------
+// 4. Countdown logic 
+// -----------------------------------------
+
+// Countdown Function
+function startCountdown() {
+    const countdownOverlay = document.getElementById('countdown-overlay');
+    const countdownElement = document.getElementById('countdown');
+    countdownOverlay.style.display = 'flex'; // Show the overlay
+
+    let count = 3;
+    countdownElement.textContent = count;
+    countdownElement.classList.remove('fade-out', 'start'); // Reset classes if needed
+    count--;
+
+    const interval = setInterval(() => {
+        if (count > 0) {
+            countdownElement.textContent = count;
+            count--;
+        } else {
+            countdownElement.textContent = 'Start';
+            countdownElement.classList.add('start');
+            clearInterval(interval);
+            setTimeout(() => {
+                countdownElement.classList.add('fade-out');
+                // Hide the countdown overlay after fade-out
+                setTimeout(() => {
+                    countdownOverlay.style.display = 'none';
+                    startGame(arrayPC, arrayPlayer);
+                }, 500);
+            }, 1000);
+        }
+    }, 1000);
+}
+
+// -----------------------------------------
+// 5. Make the game work
+// -----------------------------------------
+
+function startGame(arrayPC, arrayPlayer) {
+    let i = 0;
+    const interval = setInterval(() => {
+        if (i > arrayPC.length - 1) {
+            clearInterval(interval);
+        }
+        switch(arrayPC[i]) {
+            case 0:
+                flashButton("green");
+                playSound(audioFiles.green);
+                break;
+            case 1:
+                flashButton("red");
+                playSound(audioFiles.red);
+                break;
+            case 2:
+                flashButton("blue");
+                playSound(audioFiles.blue);
+                break;
+            case 3:
+                flashButton("yellow");
+                playSound(audioFiles.yellow);
+                break;
+        }
+        i++;
+    }, 700)
+
+    compareArrays(arrayPC, arrayPlayer);
+}
 
   
