@@ -1,0 +1,76 @@
+/* High Scores Table Styles */
+.high-scores-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    color: #fff;
+    padding: 2rem;
+  }
+  
+.high-scores-table {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    width: 80%;
+    max-width: 500px;
+}
+  
+.high-scores-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+.high-scores-table th,
+.high-scores-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+  
+.high-scores-table th {
+    font-weight: bold;
+    color: #007bff;
+}
+  
+/* Button Styles */
+.close-scores-btn {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.close-scores-btn:hover {
+    background-color: #0056b3;
+}
+  
+.show-scores-btn {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 1rem;
+}
+  
+.show-scores-btn:hover {
+    background-color: #218838;
+}

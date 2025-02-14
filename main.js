@@ -2,7 +2,9 @@
 let arrayPC = [0];
 let arrayPlayer = [];
 let isButtonsEnabled = false; // Flag to control button interactions
-let score = 1; // Initialize score
+let score = 1; 
+const HIGH_SCORES_KEY = 'simonHighScores';
+let currentPlayer = '';
 
 // -----------------------------------------
 // 1. Button functions
@@ -157,14 +159,15 @@ function getUser() {
         alert("Please enter your name to start the game.");
         return;
     }
-  
+    
+    currentPlayer = name;
     startContainer.classList.add("fade-out");
     setTimeout(() => {
         startContainer.style.display = "none";
-        // Show in-game controls when the game starts
         startCountdown();
     }, 400);
 }
+
 userInput.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         getUser();
@@ -265,6 +268,10 @@ function showLoseScreen() {
     toggleButtons(false);
     const loseScreen = document.getElementById('lose-screen');
     loseScreen.style.display = 'flex';
+    
+    // Save the score when the game ends
+    const finalScore = parseInt(document.getElementById('score-value').textContent);
+    saveHighScore(currentPlayer, finalScore);
 }
 
 function resetGame() {
@@ -291,7 +298,10 @@ function returnToMenu() {
     // Reset game state
     arrayPC = [0];
     arrayPlayer = [];
-    score = 1; // Reset score to initial value
+    currentPlayer = '';
+    score = 0; // Reset score to initial value
+
+    // Reset score display
     document.getElementById('score-value').textContent = 0;
     document.getElementById('round-display').textContent = 0;
 
@@ -313,3 +323,61 @@ function returnToMenu() {
 
 document.getElementById('restart-btn').addEventListener('click', resetGame);
 document.getElementById('return-menu-btn').addEventListener('click', returnToMenu);
+
+// -----------------------------------------
+// 8. LocalStorage and score table
+// -----------------------------------------
+
+function getHighScores() {
+    const scores = localStorage.getItem(HIGH_SCORES_KEY);
+    return scores ? JSON.parse(scores) : [];
+}
+
+function saveHighScore(playerName, score) {
+    let highScores = getHighScores();
+    
+    // Add new score
+    highScores.push({ name: playerName, score: score });
+    
+    // Sort by score (highest first)
+    highScores.sort((a, b) => b.score - a.score);
+    
+    // Save to localStorage
+    localStorage.setItem(HIGH_SCORES_KEY, JSON.stringify(highScores));
+}
+
+// Function to update high scores display
+function updateHighScoresTable() {
+    const tbody = document.getElementById('high-scores-tbody');
+    const highScores = getHighScores();
+    
+    tbody.innerHTML = '';
+    
+    highScores.forEach((score, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${score.name}</td>
+            <td>${score.score}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// Function to show high scores
+function showHighScores() {
+    const highScoresContainer = document.getElementById('high-scores-container');
+    updateHighScoresTable();
+    highScoresContainer.style.display = 'flex';
+}
+
+// Function to hide high scores
+function hideHighScores() {
+    const highScoresContainer = document.getElementById('high-scores-container');
+    highScoresContainer.style.display = 'none';
+}
+
+// Add event listeners for the high scores buttons
+document.getElementById('show-scores-btn').addEventListener('click', showHighScores);
+document.getElementById('show-scores-lose-btn').addEventListener('click', showHighScores);
+document.getElementById('close-scores-btn').addEventListener('click', hideHighScores);

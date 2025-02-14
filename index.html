@@ -8,13 +8,37 @@
   <link rel="stylesheet" href="./styles/simonCircle.css" />
   <link rel="stylesheet" href="./styles/startPage.css">
   <link rel="stylesheet" href="./styles/loseScreen.css">
+  <link rel="stylesheet" href="./styles/scoresTable.css">
 </head>
 <body>
+  <!-- High Scores Container -->
+  <div class="high-scores-container" id="high-scores-container">
+    <h1>High Scores</h1>
+    <div class="high-scores-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody id="high-scores-tbody">
+          <!-- Scores will be inserted here dynamically -->
+        </tbody>
+      </table>
+    </div>
+    <button class="close-scores-btn" id="close-scores-btn">Close</button>
+  </div>
+
   <!-- Start Screen -->
   <div id="start-container">
     <h1>Simon Says</h1>
     <input type="text" id="user-input" placeholder="Enter your name to start">
-    <button id="start-btn">Start Game</button>
+    <div>
+      <button id="start-btn">Start Game</button>
+      <button class="show-scores-btn" id="show-scores-btn">High Scores</button>
+    </div>
   </div>
 
   <!-- Score Display -->
@@ -46,7 +70,10 @@
     <div id="lose-screen" style="display: none;">
       <h1>Game Over</h1>
       <p>Skill issue, get good</p>
-      <button id="try-again-btn">Try Again</button>
+      <div>
+        <button id="try-again-btn">Try Again</button>
+        <button class="show-scores-btn" id="show-scores-lose-btn">High Scores</button>
+      </div>
     </div>
 
   <!-- External JS files -->
