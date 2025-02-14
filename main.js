@@ -7,14 +7,38 @@ const HIGH_SCORES_KEY = 'simonHighScores';
 let currentPlayer = '';
 
 // -----------------------------------------
-// 1. Button functions
+// DOM Elements declarations
 // -----------------------------------------
-
-// Get the buttons by ID
 const greenButton = document.getElementById('green');
 const redButton = document.getElementById('red');
 const yellowButton = document.getElementById('yellow');
 const blueButton = document.getElementById('blue');
+
+const startContainer = document.getElementById("start-container");
+const userInput = document.getElementById("user-input");
+const startButton = document.getElementById("start-btn");
+const maxScore = document.getElementById("score-value");
+const currentScore = document.getElementById("round-display");
+
+const countdownOverlay = document.getElementById('countdown-overlay');
+const countdownElement = document.getElementById('countdown');
+
+const loseScreen = document.getElementById('lose-screen');
+const inGameControls = document.getElementById('in-game-controls');
+
+const tryAgainBtn = document.getElementById('try-again-btn');
+const restartBtn = document.getElementById('restart-btn');
+const returnMenuBtn = document.getElementById('return-menu-btn');
+
+const highScoresTbody = document.getElementById('high-scores-tbody');
+const highScoresContainer = document.getElementById('high-scores-container');
+const showScoresBtn = document.getElementById('show-scores-btn');
+const showScoresLoseBtn = document.getElementById('show-scores-lose-btn');
+const closeScoresBtn = document.getElementById('close-scores-btn');
+
+// -----------------------------------------
+// 1. Button functions
+// -----------------------------------------
 
 // Audio file paths
 const audioFiles = {
@@ -139,19 +163,12 @@ function compareArrays(arrayPC, arrayPlayer) {
     console.log("arrayPlayer:", arrayPlayer);
     userScore(arrayPC, arrayPlayer);
     
-
     return;
 }
 
 // -----------------------------------------
 // 3. Start the game with a name 
 // -----------------------------------------
-
-const startContainer = document.getElementById("start-container");
-const userInput = document.getElementById("user-input");
-const startButton = document.getElementById("start-btn");
-const maxScore = document.getElementById("score-value");
-const currentScore = document.getElementById("round-display");
 
 function getUser() {
     const name = userInput.value.trim();
@@ -181,8 +198,6 @@ startButton.addEventListener("click", getUser);
 // -----------------------------------------
 
 function startCountdown() {
-    const countdownOverlay = document.getElementById('countdown-overlay');
-    const countdownElement = document.getElementById('countdown');
     countdownOverlay.style.display = 'flex'; // Show the overlay
 
     let count = 3;
@@ -203,7 +218,7 @@ function startCountdown() {
                 // Hide the countdown overlay after fade-out
                 setTimeout(() => {
                     countdownOverlay.style.display = 'none';
-                    document.getElementById('in-game-controls').style.display = 'block'; // Show the in-game controls
+                    inGameControls.style.display = 'block'; // Show the in-game controls
                     showPattern(arrayPC);
                 }, 500);
             }, 1000);
@@ -246,7 +261,6 @@ function showPattern(arrayPC) {
     compareArrays(arrayPC, arrayPlayer);
 }
 
-
 // Function to show the score
 function userScore(arrayPC, arrayPlayer) {
     for(let i = 0; i < arrayPC.length; i++) {
@@ -262,15 +276,12 @@ function userScore(arrayPC, arrayPlayer) {
     }
 }
 
-
-
 function showLoseScreen() {
     toggleButtons(false);
-    const loseScreen = document.getElementById('lose-screen');
     loseScreen.style.display = 'flex';
     
     // Save the score when the game ends
-    const finalScore = parseInt(document.getElementById('score-value').textContent);
+    const finalScore = parseInt(maxScore.textContent);
     saveHighScore(currentPlayer, finalScore);
 }
 
@@ -278,17 +289,17 @@ function resetGame() {
     // Reset score and update display
     score = 0;
     currentScore.textContent = 0;
-    document.getElementById('score-value').textContent = score;
+    maxScore.textContent = score;
     // Reset game arrays
     arrayPC = [0];
     arrayPlayer = [];
     // Hide the lose screen
-    document.getElementById('lose-screen').style.display = 'none';
+    loseScreen.style.display = 'none';
     // Restart the game (using the countdown)
     startCountdown();
 }
 
-document.getElementById('try-again-btn').addEventListener('click', resetGame);
+tryAgainBtn.addEventListener('click', resetGame);
 
 // -----------------------------------------
 // 7. Restart and return to menu buttons
@@ -302,18 +313,18 @@ function returnToMenu() {
     score = 0; // Reset score to initial value
 
     // Reset score display
-    document.getElementById('score-value').textContent = 0;
-    document.getElementById('round-display').textContent = 0;
+    maxScore.textContent = 0;
+    currentScore.textContent = 0;
 
     // Hide any overlays
-    document.getElementById('lose-screen').style.display = 'none';
-    document.getElementById('countdown-overlay').style.display = 'none';
+    loseScreen.style.display = 'none';
+    countdownOverlay.style.display = 'none';
 
     // Disable button interactions
     toggleButtons(false);
 
     // Hide the in-game controls
-    document.getElementById('in-game-controls').style.display = 'none';
+    inGameControls.style.display = 'none';
 
     // Show the start screen again and clear the input field
     startContainer.style.display = 'flex';
@@ -321,8 +332,8 @@ function returnToMenu() {
     userInput.value = "";
 }
 
-document.getElementById('restart-btn').addEventListener('click', resetGame);
-document.getElementById('return-menu-btn').addEventListener('click', returnToMenu);
+restartBtn.addEventListener('click', resetGame);
+returnMenuBtn.addEventListener('click', returnToMenu);
 
 // -----------------------------------------
 // 8. LocalStorage and score table
@@ -333,11 +344,26 @@ function getHighScores() {
     return scores ? JSON.parse(scores) : [];
 }
 
+function getHighScores() {
+    const scores = localStorage.getItem(HIGH_SCORES_KEY);
+    return scores ? JSON.parse(scores) : [];
+}
+
 function saveHighScore(playerName, score) {
     let highScores = getHighScores();
     
-    // Add new score
-    highScores.push({ name: playerName, score: score });
+    // Check if player already exists
+    const existingPlayerIndex = highScores.findIndex(entry => entry.name === playerName);
+    
+    if (existingPlayerIndex !== -1) {
+        // If player exists, update score only if new score is higher
+        if (score > highScores[existingPlayerIndex].score) {
+            highScores[existingPlayerIndex].score = score;
+        }
+    } else {
+        // If player doesn't exist, add new entry
+        highScores.push({ name: playerName, score: score });
+    }
     
     // Sort by score (highest first)
     highScores.sort((a, b) => b.score - a.score);
@@ -348,10 +374,9 @@ function saveHighScore(playerName, score) {
 
 // Function to update high scores display
 function updateHighScoresTable() {
-    const tbody = document.getElementById('high-scores-tbody');
-    const highScores = getHighScores();
+    highScoresTbody.innerHTML = '';
     
-    tbody.innerHTML = '';
+    const highScores = getHighScores();
     
     highScores.forEach((score, index) => {
         const row = document.createElement('tr');
@@ -360,24 +385,22 @@ function updateHighScoresTable() {
             <td>${score.name}</td>
             <td>${score.score}</td>
         `;
-        tbody.appendChild(row);
+        highScoresTbody.appendChild(row);
     });
 }
 
 // Function to show high scores
 function showHighScores() {
-    const highScoresContainer = document.getElementById('high-scores-container');
     updateHighScoresTable();
     highScoresContainer.style.display = 'flex';
 }
 
 // Function to hide high scores
 function hideHighScores() {
-    const highScoresContainer = document.getElementById('high-scores-container');
     highScoresContainer.style.display = 'none';
 }
 
 // Add event listeners for the high scores buttons
-document.getElementById('show-scores-btn').addEventListener('click', showHighScores);
-document.getElementById('show-scores-lose-btn').addEventListener('click', showHighScores);
-document.getElementById('close-scores-btn').addEventListener('click', hideHighScores);
+showScoresBtn.addEventListener('click', showHighScores);
+showScoresLoseBtn.addEventListener('click', showHighScores);
+closeScoresBtn.addEventListener('click', hideHighScores);
