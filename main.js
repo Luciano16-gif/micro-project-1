@@ -103,6 +103,7 @@ function flashButton(buttonId) {
     }, 300);
 }
 
+// Function to toggle button interactions
 function toggleButtons(enable) {
     isButtonsEnabled = enable;
 }
@@ -227,7 +228,7 @@ function startCountdown() {
 }
 
 // -----------------------------------------
-// 5. Make the game work (show pattern)
+// 5. Show pattern and score
 // -----------------------------------------
 
 function showPattern(arrayPC) { 
@@ -275,6 +276,10 @@ function userScore(arrayPC, arrayPlayer) {
         }, 700);
     }
 }
+
+// -----------------------------------------
+// 6. Lose screen logic
+// -----------------------------------------
 
 function showLoseScreen() {
     toggleButtons(false);
