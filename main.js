@@ -158,14 +158,13 @@ function getUser() {
         return;
     }
   
-    // Fade-out effect before hiding the start screen
     startContainer.classList.add("fade-out");
     setTimeout(() => {
         startContainer.style.display = "none";
-        startCountdown(); // Begin the countdown after the start screen fades
+        // Show in-game controls when the game starts
+        startCountdown();
     }, 400);
 }
-
 userInput.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         getUser();
@@ -201,6 +200,7 @@ function startCountdown() {
                 // Hide the countdown overlay after fade-out
                 setTimeout(() => {
                     countdownOverlay.style.display = 'none';
+                    document.getElementById('in-game-controls').style.display = 'block'; // Show the in-game controls
                     showPattern(arrayPC);
                 }, 500);
             }, 1000);
@@ -259,9 +259,7 @@ function userScore(arrayPC, arrayPlayer) {
     }
 }
 
-// -----------------------------------------
-// 6. Lose screen and reset game logic
-// -----------------------------------------
+
 
 function showLoseScreen() {
     toggleButtons(false);
@@ -284,3 +282,34 @@ function resetGame() {
 }
 
 document.getElementById('try-again-btn').addEventListener('click', resetGame);
+
+// -----------------------------------------
+// 7. Restart and return to menu buttons
+// -----------------------------------------
+
+function returnToMenu() {
+    // Reset game state
+    arrayPC = [0];
+    arrayPlayer = [];
+    score = 1; // Reset score to initial value
+    document.getElementById('score-value').textContent = 0;
+    document.getElementById('round-display').textContent = 0;
+
+    // Hide any overlays
+    document.getElementById('lose-screen').style.display = 'none';
+    document.getElementById('countdown-overlay').style.display = 'none';
+
+    // Disable button interactions
+    toggleButtons(false);
+
+    // Hide the in-game controls
+    document.getElementById('in-game-controls').style.display = 'none';
+
+    // Show the start screen again and clear the input field
+    startContainer.style.display = 'flex';
+    startContainer.classList.remove('fade-out');
+    userInput.value = "";
+}
+
+document.getElementById('restart-btn').addEventListener('click', resetGame);
+document.getElementById('return-menu-btn').addEventListener('click', returnToMenu);
