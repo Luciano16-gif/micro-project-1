@@ -125,7 +125,7 @@ function compareArrays(arrayPC, arrayPlayer) {
                 console.log(`Element ${newElement} was added to arrayPC.`);
                 arrayPlayer.length = 0; 
                 setTimeout(() => {
-                    startGame(arrayPC, arrayPlayer);
+                    showPattern(arrayPC);
                 }, 400);
             }
         }, 400);
@@ -259,4 +259,28 @@ function userScore(arrayPC, arrayPlayer) {
     }
 }
 
-  
+// -----------------------------------------
+// 6. Lose screen and reset game logic
+// -----------------------------------------
+
+function showLoseScreen() {
+    toggleButtons(false);
+    const loseScreen = document.getElementById('lose-screen');
+    loseScreen.style.display = 'flex';
+}
+
+function resetGame() {
+    // Reset score and update display
+    score = 0;
+    currentScore.textContent = 0;
+    document.getElementById('score-value').textContent = score;
+    // Reset game arrays
+    arrayPC = [0];
+    arrayPlayer = [];
+    // Hide the lose screen
+    document.getElementById('lose-screen').style.display = 'none';
+    // Restart the game (using the countdown)
+    startCountdown();
+}
+
+document.getElementById('try-again-btn').addEventListener('click', resetGame);
