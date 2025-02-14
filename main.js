@@ -258,7 +258,7 @@ function showPattern(arrayPC) {
                 break;
         }
         i++;
-    }, 700)
+    }, 480)
     compareArrays(arrayPC, arrayPlayer);
 }
 
@@ -347,12 +347,7 @@ returnMenuBtn.addEventListener('click', returnToMenu);
 function getHighScores() {
     const scores = localStorage.getItem(HIGH_SCORES_KEY);
     return scores ? JSON.parse(scores) : [];
-}
-
-function getHighScores() {
-    const scores = localStorage.getItem(HIGH_SCORES_KEY);
-    return scores ? JSON.parse(scores) : [];
-}
+}   
 
 function saveHighScore(playerName, score) {
     let highScores = getHighScores();
