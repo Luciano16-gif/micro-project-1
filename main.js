@@ -261,7 +261,9 @@ function userScore(arrayPC, arrayPlayer) {
         currentScore.textContent = i + 1;
     }
     if(arrayPC.length === arrayPlayer.length) {
-        currentScore.textContent = 0;
+        setTimeout(() => {
+            currentScore.textContent = 0;
+        }, 700);
     }
 }
 
