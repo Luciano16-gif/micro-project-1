@@ -1,5 +1,5 @@
 // Arrays to store values
-let arrayPC = [0]; // starts with 0 so it always starts with green
+let arrayPC = [0];
 let arrayPlayer = [];
 let isButtonsEnabled = false; // Flag to control button interactions
 let score = 1; // Initialize score
@@ -112,28 +112,32 @@ function compareArrays(arrayPC, arrayPlayer) {
         }
     }
 
-    // If all common elements are equal and the round is complete
-    if ((arrayPC.length === arrayPlayer.length) && areEqual) {
-        console.log("The arrays are equal. Updating arrays...");
-
-        score++; // Increment score
-        document.getElementById('score-value').textContent = score;
-
-        // Add an element to arrayPC
-        let newElement = generateRandomNumber();
-        arrayPC.push(newElement);
-        console.log(`Element ${newElement} was added to arrayPC.`);
-
-        // Reset arrayPlayer
-        arrayPlayer.length = 0; 
+    // If all common elements are equal
+    if (areEqual) {
+        console.log("All common elements are equal.");
         setTimeout(() => {
-            showPattern(arrayPC);
+            if (arrayPC.length === arrayPlayer.length) {
+                console.log("The arrays are equal. Updating arrays...");
+    
+                // Add an element to arrayPC
+                let newElement = generateRandomNumber();
+                arrayPC.push(newElement);
+                console.log(`Element ${newElement} was added to arrayPC.`);
+                arrayPlayer.length = 0; 
+                setTimeout(() => {
+                    startGame(arrayPC, arrayPlayer);
+                }, 400);
+            }
         }, 400);
+        
     }
 
     console.log("Current state:");
     console.log("arrayPC:", arrayPC);
     console.log("arrayPlayer:", arrayPlayer);
+    userScore(arrayPC, arrayPlayer);
+    
+
     return;
 }
 
@@ -144,6 +148,8 @@ function compareArrays(arrayPC, arrayPlayer) {
 const startContainer = document.getElementById("start-container");
 const userInput = document.getElementById("user-input");
 const startButton = document.getElementById("start-btn");
+const maxScore = document.getElementById("score-value");
+const currentScore = document.getElementById("round-display");
 
 function getUser() {
     const name = userInput.value.trim();
@@ -233,32 +239,24 @@ function showPattern(arrayPC) {
                 break;
         }
         i++;
-    }, 700);
-}
-
-// -----------------------------------------
-// 6. Lose screen logic
-// -----------------------------------------
-
-function showLoseScreen() {
-    toggleButtons(false);
-    const loseScreen = document.getElementById('lose-screen');
-    loseScreen.style.display = 'flex';
+    }, 700)
+    compareArrays(arrayPC, arrayPlayer);
 }
 
 
-function resetGame() {
-    // Reset score and update display
-    score = 1;
-    document.getElementById('score-value').textContent = score;
-    // Reset game arrays
-    arrayPC = [0, 1, 2, 3];
-    arrayPlayer = [];
-    // Hide the lose screen
-    document.getElementById('lose-screen').style.display = 'none';
-    // Restart the game (using the countdown)
-    startCountdown();
+// Function to show the score
+function userScore(arrayPC, arrayPlayer) {
+    for(let i = 0; i < arrayPC.length; i++) {
+        maxScore.textContent = i;
+    }
+    for(let i = 0; i < arrayPlayer.length; i++) {
+        currentScore.textContent = i + 1;
+    }
+    if(arrayPC.length === arrayPlayer.length) {
+        setTimeout(() => {
+            currentScore.textContent = 0;
+        }, 700);
+    }
 }
 
-// Reset the game on try again button click
-document.getElementById('try-again-btn').addEventListener('click', resetGame);
+  
