@@ -192,10 +192,6 @@ body {
   white-space: nowrap;
 }
 
-#return-menu-btn {
-  background-color: rgba(108, 117, 125, 0.9);
-}
-
 /* Hover Effects */
 #in-game-controls button:hover {
   transform: translateY(-2px);
