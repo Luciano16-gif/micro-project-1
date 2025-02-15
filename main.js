@@ -123,10 +123,9 @@ function generateRandomNumber() {
 function addValue(valor) {
     arrayPlayer.push(valor);
     console.log('Array actual:', arrayPlayer);
-    compareArrays(arrayPC, arrayPlayer); // Compare the arrays 
+    compareArrays(arrayPC, arrayPlayer);
 }
 
-// Function to compare arrays
 function compareArrays(arrayPC, arrayPlayer) {
 
     let areEqual = true; // This in theory isnt needed but lets keep it just in case
@@ -174,11 +173,10 @@ function compareArrays(arrayPC, arrayPlayer) {
 // 3. Start the game with a name 
 // -----------------------------------------
 
-// Function to get the user's name
 function getUser() {
     const name = userInput.value.trim();
     if (name === "" || name.length > 10) {
-        alert("Please enter a valid name (1-10 characters)."); // Display an error message if the name is too long
+        alert("Please enter a valid name (1-10 characters).");
         return;
     }
     
@@ -186,7 +184,7 @@ function getUser() {
     onMenu = false;
     setTimeout(() => {
         startContainer.style.display = "none";
-        startCountdown(); // Start the pregame countdown
+        startCountdown();
     }, 400);
 }
 
@@ -202,7 +200,6 @@ startButton.addEventListener("click", getUser);
 // 4. Countdown logic 
 // -----------------------------------------
 
-// Function to start the countdown before starting the game
 function startCountdown() {
     countdownOverlay.style.display = 'flex'; // Show the overlay
 
@@ -212,6 +209,10 @@ function startCountdown() {
     count--;
 
     const interval = setInterval(() => {
+        if (onMenu) {
+            clearInterval(interval);
+            return;
+        }
         if (count > 0) {
             countdownElement.textContent = count;
             count--;
@@ -238,7 +239,6 @@ function startCountdown() {
 // 5. Show pattern and score
 // -----------------------------------------
 
-// Function to show the pattern automatically
 function showPattern(arrayPC) { 
     toggleButtons(false);
     let i = 0;
@@ -266,14 +266,12 @@ function showPattern(arrayPC) {
                 break;
         }
         i++;
-    }, 480)
-    compareArrays(arrayPC, arrayPlayer);
+    }, 480);
 }
 
-// Function to update the score
 function userScore(arrayPC, arrayPlayer) {
     for(let i = 0; i < arrayPC.length; i++) {
-        maxScore.textContent = i;
+        maxScore.textContent = i + 1;
     }
     for(let i = 0; i < arrayPlayer.length; i++) {
         currentScore.textContent = i + 1;
@@ -289,7 +287,6 @@ function userScore(arrayPC, arrayPlayer) {
 // 6. Lose screen logic
 // -----------------------------------------
 
-//Function to show the lose screen
 function showLoseScreen() {
     toggleButtons(false);
     loseScreen.style.display = 'flex';
@@ -299,7 +296,6 @@ function showLoseScreen() {
     saveHighScore(currentPlayer, finalScore);
 }
 
-// Function to reset the game
 function resetGame() {
     isRestartEnabled = false;
     // Reset score and update display
@@ -325,7 +321,6 @@ tryAgainBtn.addEventListener('click', resetGame);
 // 7. Restart and return to menu buttons
 // -----------------------------------------
 
-// Function to return to the menu
 function returnToMenu() {
     // Reset game state
     onMenu = true;
@@ -366,13 +361,11 @@ returnMenuBtn.addEventListener('click', returnToMenu);
 // 8. LocalStorage and score table
 // -----------------------------------------
 
-// Function to retrieve high scores
 function getHighScores() {
     const scores = localStorage.getItem(HIGH_SCORES_KEY);
     return scores ? JSON.parse(scores) : [];
 }   
 
-// Function to save high scores
 function saveHighScore(playerName, score) {
     let highScores = getHighScores();
     
