@@ -74,3 +74,9 @@
 .show-scores-btn:hover {
     background-color: #218838;
 }
+
+@media screen and (max-width: 350px) {
+    .show-scores-btn{
+        margin-left: 0;
+    }
+}

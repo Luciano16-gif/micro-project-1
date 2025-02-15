@@ -2,6 +2,7 @@
 let arrayPC = [0];
 let arrayPlayer = [];
 let isButtonsEnabled = false; // Flag to control button interactions
+let isRestartEnabled = true; // Flag to control restart
 let score = 1; 
 const HIGH_SCORES_KEY = 'simonHighScores';
 let currentPlayer = '';
@@ -291,6 +292,7 @@ function showLoseScreen() {
 }
 
 function resetGame() {
+    isRestartEnabled = false;
     // Reset score and update display
     score = 0;
     currentScore.textContent = 0;
@@ -302,6 +304,10 @@ function resetGame() {
     loseScreen.style.display = 'none';
     // Restart the game (using the countdown)
     startCountdown();
+    setTimeout(() => {
+        isRestartEnabled = true;
+    }, 5000);
+    
 }
 
 tryAgainBtn.addEventListener('click', resetGame);
@@ -337,7 +343,12 @@ function returnToMenu() {
     userInput.value = "";
 }
 
-restartBtn.addEventListener('click', resetGame);
+restartBtn.addEventListener('click', () => {
+    if (!isRestartEnabled) return; 
+    resetGame();
+});
+
+
 returnMenuBtn.addEventListener('click', returnToMenu);
 
 // -----------------------------------------
@@ -400,7 +411,7 @@ function hideHighScores() {
     highScoresContainer.style.display = 'none';
 }
 
-// Add event listeners for the high scores buttons
+// Eent listeners for the high scores buttons
 showScoresBtn.addEventListener('click', showHighScores);
 showScoresLoseBtn.addEventListener('click', showHighScores);
 closeScoresBtn.addEventListener('click', hideHighScores);
