@@ -19,7 +19,7 @@
 #start-container h1 {
   color: #fff;
   margin-bottom: 1.5rem;
-  font-size: 3rem;
+  font-size: 4rem;
 }
 
 /* Input field */
@@ -29,7 +29,7 @@
   border: 2px solid #ccc;
   border-radius: 4px;
   width: 80%;
-  max-width: 300px;
+  max-width: fit-content;
   text-align: center;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   outline: none;
@@ -59,13 +59,27 @@
   background-color: #0056b3;
 }
 
+@media screen and (max-width: 1024px) {
+  #start-container h1 {
+    font-size: 7rem;
+  }
+  #user-input {
+    font-size: 2rem; 
+    max-width: fit-content;
+  }
+  #start-btn {
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
 /* Responsive adjustments for smaller screens */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   #start-container h1 {
     font-size: 2.5rem;
   }
   #user-input {
-    font-size: 0.9rem; /* if we dont do this the placeholder text will get ocluded */
+    font-size: 0.9rem; 
   }
   #start-btn {
     font-size: 1rem;

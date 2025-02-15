@@ -222,7 +222,7 @@ body {
 }
 
 /* Responsive Adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   #in-game-controls {
     top: auto;
     bottom: 20px;
@@ -232,9 +232,16 @@ body {
   }
 
   #in-game-controls button {
-    font-size: 1rem;
-    padding: 0.8em 1em;
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
   }
+}
+
+@media screen and (max-width: 768px) {	
+    #in-game-controls button{
+      padding: 0.7em 1.2em;
+      font-size: 0.95rem;
+    }
 }
 
 /* Extra Small Screens */
@@ -252,8 +259,8 @@ body {
 }
 
 
-/* --- Responsive Adjustments for Mobile --- */
-@media (max-width: 768px) {
+/* --- Responsive Adjustments for Mobile and tablets --- */
+@media (max-width: 1024px) {
   .circle-container {
     width: 90vw;
     height: 90vw;

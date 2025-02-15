@@ -40,3 +40,32 @@
 #try-again-btn:hover {
     background-color: #c0392b;
 }
+
+/* Responsive Adjustments so it look good on tablets*/
+@media screen and (max-width: 1024px) {
+    #try-again-btn {
+        font-size: 2rem;
+        padding: 1rem 1.5rem;
+    }
+    #lose-screen h1 {
+        font-size: 5rem;
+    }
+      
+    #lose-screen p {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #try-again-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.2rem;
+    }
+    #lose-screen h1 {
+        font-size: 3rem;
+    }
+      
+    #lose-screen p {
+        font-size: 1.2rem;
+    }
+}

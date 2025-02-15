@@ -21,7 +21,7 @@
     padding: 1rem;
     margin: 1rem 0;
     width: 80%;
-    max-width: 500px;
+    max-width: 50vh;
 }
   
 .high-scores-table table {
@@ -32,7 +32,7 @@
 .high-scores-table th,
 .high-scores-table td {
     padding: 0.5rem;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
   
@@ -75,9 +75,66 @@
     background-color: #218838;
 }
 
-/* Responsive Adjustments, I handpicked the width due to a bug, unclear if it happens due to the browser or other reason */
-@media screen and (max-width: 356px) { 
+@media screen and (max-width: 1024px) {
+    .show-scores-btn{
+        font-size: 2rem;
+        padding: 1rem 1.5rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .show-scores-btn{
+        padding: 0.8rem 1.5rem;
+        font-size: 1.2rem;
+    }
+}
+
+/* Enhanced Mobile Responsiveness for Very Small Screens */
+@media screen and (max-width: 350px) {
+    .high-scores-container {
+        padding: 1rem;
+    }
+
     .show-scores-btn {
         margin-left: 0;
+    }
+
+    .high-scores-container h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .high-scores-table {
+        padding: 0.5rem;
+        width: 95%;
+    }
+    
+    .high-scores-table th,
+    .high-scores-table td {
+        padding: 0.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .close-scores-btn,
+    .show-scores-btn {
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+    
+    /* Adjust table column widths for better space usage */
+    .high-scores-table th:first-child,
+    .high-scores-table td:first-child {
+        width: 20%;
+    }
+    
+    .high-scores-table th:nth-child(2),
+    .high-scores-table td:nth-child(2) {
+        width: 50%;
+    }
+    
+    .high-scores-table th:last-child,
+    .high-scores-table td:last-child {
+        width: 30%;
     }
 }
