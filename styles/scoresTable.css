@@ -83,9 +83,10 @@
 }
 
 @media screen and (max-width: 768px) {
-    .show-scores-btn{
-        padding: 0.8rem 1.5rem;
-        font-size: 1.2rem;
+    .close-scores-btn,
+    .show-scores-btn {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
     }
 }
 
@@ -117,8 +118,8 @@
     
     .close-scores-btn,
     .show-scores-btn {
-        padding: 0.6rem 1rem;
         font-size: 1rem;
+        padding: 0.7rem 1.2rem;
         margin-top: 0.5rem;
     }
     
