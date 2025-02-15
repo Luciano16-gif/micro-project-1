@@ -75,8 +75,9 @@
     background-color: #218838;
 }
 
-@media screen and (max-width: 350px) {
-    .show-scores-btn{
+/* Responsive Adjustments, I handpicked the width due to a bug, unclear if it happens due to the browser or other reason */
+@media screen and (max-width: 356px) { 
+    .show-scores-btn {
         margin-left: 0;
     }
 }
