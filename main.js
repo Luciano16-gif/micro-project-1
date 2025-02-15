@@ -3,6 +3,7 @@ let arrayPC = [0];
 let arrayPlayer = [];
 let isButtonsEnabled = false; // Flag to control button interactions
 let isRestartEnabled = true; // Flag to control restart
+let onMenu = true; // Flag to detect if the user is on the menu
 let score = 1; 
 const HIGH_SCORES_KEY = 'simonHighScores';
 let currentPlayer = '';
@@ -180,6 +181,7 @@ function getUser() {
     }
     
     currentPlayer = name;
+    onMenu = false;
     startContainer.classList.add("fade-out");
     setTimeout(() => {
         startContainer.style.display = "none";
@@ -220,8 +222,10 @@ function startCountdown() {
                 // Hide the countdown overlay after fade-out
                 setTimeout(() => {
                     countdownOverlay.style.display = 'none';
-                    inGameControls.style.display = 'block'; // Show the in-game controls
-                    showPattern(arrayPC);
+                    if (!onMenu) {
+                        inGameControls.style.display = 'block'; // Show the in-game controls if the user is not on the menu
+                        showPattern(arrayPC);
+                    };              
                 }, 500);
             }, 1000);
         }
@@ -318,6 +322,7 @@ tryAgainBtn.addEventListener('click', resetGame);
 
 function returnToMenu() {
     // Reset game state
+    onMenu = true;
     arrayPC = [0];
     arrayPlayer = [];
     currentPlayer = '';
