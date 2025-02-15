@@ -175,8 +175,8 @@ function compareArrays(arrayPC, arrayPlayer) {
 
 function getUser() {
     const name = userInput.value.trim();
-    if (name === "") {
-        alert("Please enter your name to start the game.");
+    if (name === "" || name.length > 10) {
+        alert("Please enter a valid name (1-10 characters).");
         return;
     }
     
@@ -239,7 +239,7 @@ function showPattern(arrayPC) {
     toggleButtons(false);
     let i = 0;
     const interval = setInterval(() => {
-        if (i > arrayPC.length - 1) {
+        if (i > arrayPC.length - 1 || onMenu) {
             clearInterval(interval);
             toggleButtons(true);
         }

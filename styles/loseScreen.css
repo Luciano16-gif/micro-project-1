@@ -58,8 +58,8 @@
 
 @media screen and (max-width: 768px) {
     #try-again-btn {
-        padding: 0.8rem 1.5rem;
-        font-size: 1.2rem;
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
     }
     #lose-screen h1 {
         font-size: 3rem;

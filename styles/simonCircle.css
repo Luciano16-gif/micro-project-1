@@ -173,7 +173,7 @@ body {
   display: none;
   top: 10px;
   right: 10px;
-  z-index: 9999;
+  z-index: 9000;
 }
 
 /* In-Game Control Buttons Style */
