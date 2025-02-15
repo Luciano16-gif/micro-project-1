@@ -268,7 +268,7 @@ function showPattern(arrayPC) {
 
 function userScore(arrayPC, arrayPlayer) {
     for(let i = 0; i < arrayPC.length; i++) {
-        maxScore.textContent = i + 1;
+        maxScore.textContent = i;
     }
     for(let i = 0; i < arrayPlayer.length; i++) {
         currentScore.textContent = i + 1;
