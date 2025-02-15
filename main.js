@@ -182,7 +182,6 @@ function getUser() {
     
     currentPlayer = name;
     onMenu = false;
-    startContainer.classList.add("fade-out");
     setTimeout(() => {
         startContainer.style.display = "none";
         startCountdown();
@@ -267,10 +266,9 @@ function showPattern(arrayPC) {
     compareArrays(arrayPC, arrayPlayer);
 }
 
-// Function to show the score
 function userScore(arrayPC, arrayPlayer) {
     for(let i = 0; i < arrayPC.length; i++) {
-        maxScore.textContent = i;
+        maxScore.textContent = i + 1;
     }
     for(let i = 0; i < arrayPlayer.length; i++) {
         currentScore.textContent = i + 1;
@@ -344,7 +342,8 @@ function returnToMenu() {
 
     // Show the start screen again and clear the input field
     startContainer.style.display = 'flex';
-    startContainer.classList.remove('fade-out');
+
+    // Clear the input field
     userInput.value = "";
 }
 
@@ -352,7 +351,6 @@ restartBtn.addEventListener('click', () => {
     if (!isRestartEnabled) return; 
     resetGame();
 });
-
 
 returnMenuBtn.addEventListener('click', returnToMenu);
 
