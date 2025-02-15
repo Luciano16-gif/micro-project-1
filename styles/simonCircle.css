@@ -221,6 +221,19 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+@media (hover: none) {
+  #in-game-controls button:active {
+    transition: all 0.1s ease;
+  }
+  
+  #in-game-controls button:not(:active) {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.1s ease;
+    background-color: rgba(0, 123, 255, 0.9);
+  }
+}
+
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   #in-game-controls {
