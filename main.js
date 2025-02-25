@@ -1,423 +1,520 @@
-// Arrays to store values
-let arrayPC = [0];
-let arrayPlayer = [];
-let isButtonsEnabled = false; // Flag to control button interactions
-let isRestartEnabled = true; // Flag to control restart
-let onMenu = true; // Flag to detect if the user is on the menu
-let score = 1; 
-const HIGH_SCORES_KEY = 'simonHighScores';
-let currentPlayer = '';
+/**
+ * Simon Says Game
+ * But now its BETTER! with improved version with better structure, error handling and organization
+ */
 
 // -----------------------------------------
-// DOM Elements declarations
+// Constants and Config
 // -----------------------------------------
-const greenButton = document.getElementById('green');
-const redButton = document.getElementById('red');
-const yellowButton = document.getElementById('yellow');
-const blueButton = document.getElementById('blue');
-
-const startContainer = document.getElementById("start-container");
-const userInput = document.getElementById("user-input");
-const startButton = document.getElementById("start-btn");
-const maxScore = document.getElementById("score-value");
-const currentScore = document.getElementById("round-display");
-
-const countdownOverlay = document.getElementById('countdown-overlay');
-const countdownElement = document.getElementById('countdown');
-
-const loseScreen = document.getElementById('lose-screen');
-const inGameControls = document.getElementById('in-game-controls');
-
-const tryAgainBtn = document.getElementById('try-again-btn');
-const restartBtn = document.getElementById('restart-btn');
-const returnMenuBtn = document.getElementById('return-menu-btn');
-
-const highScoresTbody = document.getElementById('high-scores-tbody');
-const highScoresContainer = document.getElementById('high-scores-container');
-const showScoresBtn = document.getElementById('show-scores-btn');
-const showScoresLoseBtn = document.getElementById('show-scores-lose-btn');
-const closeScoresBtn = document.getElementById('close-scores-btn');
-
-// -----------------------------------------
-// 1. Button functions
-// -----------------------------------------
-
-// Audio file paths
-const audioFiles = {
+const GAME_CONFIG = {
+    COUNTDOWN_DURATION: 3,
+    PATTERN_DELAY: 500,
+    NEXT_SEQUENCE_DELAY: 400,
+    SCORE_RESET_DELAY: 700,
+    HIGH_SCORES_KEY: 'simonHighScores',
+    MAX_NAME_LENGTH: 10,
+    BUTTON_COLORS: ['green', 'red', 'blue', 'yellow'],
+    FLASH_DURATION: 300,
+    RESTART_COOLDOWN: 5000
+  };
+  
+  const AUDIO_CONFIG = {
     green: './assets/sonido-verde.mp3',
     red: './assets/sonido-rojo.mp3',
     yellow: './assets/sonido-amarillo.mp3',
-    blue: './assets/sonido-azul.mp3'
-};
-
-// Assign click events to each button
-greenButton.addEventListener('click', () => {
-    if (!isButtonsEnabled) return; 
-    buttonInteraction(0, 'green');
-    playSound(audioFiles.green);
-});
-
-redButton.addEventListener('click', () => {
-    if (!isButtonsEnabled) return;
-    buttonInteraction(1, 'red');
-    playSound(audioFiles.red);
-});
-
-blueButton.addEventListener('click', () => {
-    if (!isButtonsEnabled) return;
-    buttonInteraction(2, 'blue');
-    playSound(audioFiles.blue);
-});
-
-yellowButton.addEventListener('click', () => {
-    if (!isButtonsEnabled) return;
-    buttonInteraction(3, 'yellow');
-    playSound(audioFiles.yellow);
-});
-
-// Function to handle button interactions
-function buttonInteraction(value, buttonId) {
-    addValue(value);
-    flashButton(buttonId);
-}
-
-// Function to play sound
-function playSound(soundPath) {
-    const audio = new Audio(soundPath);
-    audio.play().catch(error => console.error('Error playing sound:', error));
-}
-
-// Function to flash a given button element by its ID
-function flashButton(buttonId) {
-    const button = document.getElementById(buttonId);
-    if (!button) return;
+    blue: './assets/sonido-azul.mp3',
+  };
+  
+  // -----------------------------------------
+  // Game State
+  // -----------------------------------------
+  const GameState = {
+    computerSequence: [0],
+    playerSequence: [],
+    isButtonsEnabled: false,
+    isRestartEnabled: true,
+    isOnMenu: true,
+    score: 1,
+    currentPlayer: '',
     
-    // Remove flash class if already present 
+    reset() {
+      this.computerSequence = [0];
+      this.playerSequence = [];
+      this.score = 1;
+    },
+    
+    addToComputerSequence() {
+      const newElement = Math.floor(Math.random() * 4);
+      this.computerSequence.push(newElement);
+      return newElement;
+    },
+    
+    resetPlayerSequence() {
+      this.playerSequence = [];
+    },
+    
+    addToPlayerSequence(value) {
+      this.playerSequence.push(value);
+    }
+  };
+  
+  // -----------------------------------------
+  // DOM Elements Cache
+  // -----------------------------------------
+  const DOM = {
+    // Buttons
+    buttons: {
+      green: document.getElementById('green'),
+      red: document.getElementById('red'),
+      yellow: document.getElementById('yellow'),
+      blue: document.getElementById('blue'),
+      startButton: document.getElementById('start-btn'),
+      tryAgainBtn: document.getElementById('try-again-btn'),
+      restartBtn: document.getElementById('restart-btn'),
+      returnMenuBtn: document.getElementById('return-menu-btn'),
+      showScoresBtn: document.getElementById('show-scores-btn'),
+      showScoresLoseBtn: document.getElementById('show-scores-lose-btn'),
+      closeScoresBtn: document.getElementById('close-scores-btn')
+    },
+    
+    // Containers and screens
+    containers: {
+      startContainer: document.getElementById('start-container'),
+      countdownOverlay: document.getElementById('countdown-overlay'),
+      loseScreen: document.getElementById('lose-screen'),
+      inGameControls: document.getElementById('in-game-controls'),
+      highScoresContainer: document.getElementById('high-scores-container')
+    },
+    
+    // Text and display elements
+    display: {
+      userInput: document.getElementById('user-input'),
+      maxScore: document.getElementById('score-value'),
+      currentScore: document.getElementById('round-display'),
+      countdownElement: document.getElementById('countdown'),
+      highScoresTbody: document.getElementById('high-scores-tbody')
+    }
+  };
+  
+  // -----------------------------------------
+  // 1. Button Functions and Input Handling
+  // -----------------------------------------
+  
+  /**
+   * Initializes all button event listeners
+   */
+  function initializeButtons() {
+    DOM.buttons.green.addEventListener('click', () => handleButtonClick(0, 'green'));
+    DOM.buttons.red.addEventListener('click', () => handleButtonClick(1, 'red'));
+    DOM.buttons.blue.addEventListener('click', () => handleButtonClick(2, 'blue'));
+    DOM.buttons.yellow.addEventListener('click', () => handleButtonClick(3, 'yellow'));
+    
+    DOM.buttons.startButton.addEventListener('click', validateAndStartGame);
+    DOM.buttons.tryAgainBtn.addEventListener('click', resetGame);
+    DOM.buttons.restartBtn.addEventListener('click', handleRestart);
+    DOM.buttons.returnMenuBtn.addEventListener('click', returnToMenu);
+    
+    DOM.buttons.showScoresBtn.addEventListener('click', showHighScores);
+    DOM.buttons.showScoresLoseBtn.addEventListener('click', showHighScores);
+    DOM.buttons.closeScoresBtn.addEventListener('click', hideHighScores);
+    
+    DOM.display.userInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        validateAndStartGame();
+      }
+    });
+  }
+  
+  /**
+   * Handles button clicks during gameplay
+   * @param {number} value - The value/index associated with the button
+   * @param {string} buttonId - The id of the button element
+   */
+  function handleButtonClick(value, buttonId) {
+    if (!GameState.isButtonsEnabled) {
+      return;
+    }
+    
+    GameState.addToPlayerSequence(value);
+    flashButton(buttonId);
+    playSound(buttonId);
+    
+    // Compare sequences after player input
+    compareSequences();
+  }
+  
+  /**
+   * Creates visual feedback by flashing a button
+   * @param {string} buttonId - The id of the button to flash
+   */
+  function flashButton(buttonId) {
+    const button = document.getElementById(buttonId);
+    if (!button) {
+      console.error(`Button with id ${buttonId} not found`);
+      return;
+    }
+    
+    // Remove flash class if already present to restart animation
     button.classList.remove('flash');
-    void button.offsetWidth; // Force reflow
-  
-    // Add the flash class to start the animation
+    // Force reflow to ensure animation restarts
+    void button.offsetWidth;
+    
+    // Add flash class and set timeout to remove it
     button.classList.add('flash');
-  
-    // Remove the class after the animation completes (0.3s here)
     setTimeout(() => {
       button.classList.remove('flash');
-    }, 300);
-}
-
-// Function to toggle button interactions
-function toggleButtons(enable) {
-    isButtonsEnabled = enable;
-}
-
-// -----------------------------------------
-// 2. Array functions for the game logic
-// -----------------------------------------
-
-// Function to generate a random number
-function generateRandomNumber() {
-    return Math.floor(Math.random() * 4);
-}
-
-// Function to add a value to the player's array
-function addValue(valor) {
-    arrayPlayer.push(valor);
-    console.log('Array actual:', arrayPlayer);
-    compareArrays(arrayPC, arrayPlayer);
-}
-
-function compareArrays(arrayPC, arrayPlayer) {
-
-    let areEqual = true; // This in theory isnt needed but lets keep it just in case
-
-    // Compare the common elements
-    for (let i = 0; i < arrayPlayer.length; i++) {
-        if (arrayPC[i] !== arrayPlayer[i]) {
-            console.log(`Different at position ${i}: ${arrayPC[i]} and ${arrayPlayer[i]}`);
-            arrayPlayer.length = 0;
-            areEqual = false; 
-            showLoseScreen();
-            return; 
-        }
-    }
-
-    // If all common elements are equal
-    if (areEqual) {
-        console.log("All common elements are equal.");
-        setTimeout(() => {
-            if (arrayPC.length === arrayPlayer.length) {
-                console.log("The arrays are equal. Updating arrays...");
-    
-                // Add an element to arrayPC
-                let newElement = generateRandomNumber();
-                arrayPC.push(newElement);
-                console.log(`Element ${newElement} was added to arrayPC.`);
-                arrayPlayer.length = 0; 
-                setTimeout(() => {
-                    showPattern(arrayPC);
-                }, 400);
-            }
-        }, 400);
-        
-    }
-
-    console.log("Current state:");
-    console.log("arrayPC:", arrayPC);
-    console.log("arrayPlayer:", arrayPlayer);
-    userScore(arrayPC, arrayPlayer);
-    
-    return;
-}
-
-// -----------------------------------------
-// 3. Start the game with a name 
-// -----------------------------------------
-
-function getUser() {
-    const name = userInput.value.trim();
-    if (name === "" || name.length > 10) {
-        alert("Please enter a valid name (1-10 characters).");
+    }, GAME_CONFIG.FLASH_DURATION);
+  }
+  
+  /**
+   * Plays sound associated with a button color
+   * @param {string} color - The color of the button
+   */
+  function playSound(color) {
+    try {
+      const soundPath = AUDIO_CONFIG[color];
+      if (!soundPath) {
+        console.warn(`No sound defined for color: ${color}`);
         return;
+      }
+      
+      const audio = new Audio(soundPath);
+      audio.play().catch(error => {
+        console.warn(`Sound playback failed: ${error.message}`);
+        // Continue game even if sound fails
+      });
+    } catch (error) {
+      console.error('Error playing sound:', error);
+      // Game can continue without sound
+    }
+  }
+  
+  /**
+   * Enables or disables button interaction
+   * @param {boolean} enable - Whether to enable buttons
+   */
+  function toggleButtons(enable) {
+    GameState.isButtonsEnabled = enable;
+  }
+  
+  // -----------------------------------------
+  // 2. Game Logic
+  // -----------------------------------------
+  
+  /**
+   * Compares player and computer sequences
+   */
+  function compareSequences() {
+    const playerSeq = GameState.playerSequence;
+    const computerSeq = GameState.computerSequence;
+    
+    // Check if player made a mistake
+    for (let i = 0; i < playerSeq.length; i++) {
+      if (computerSeq[i] !== playerSeq[i]) {
+        GameState.resetPlayerSequence();
+        showLoseScreen();
+        return;
+      }
     }
     
-    currentPlayer = name;
-    onMenu = false;
-    setTimeout(() => {
-        startContainer.style.display = "none";
-        startCountdown();
-    }, 400);
-}
-
-userInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        getUser();
-    }
-});
-
-startButton.addEventListener("click", getUser);
-
-// -----------------------------------------
-// 4. Countdown logic 
-// -----------------------------------------
-
-function startCountdown() {
-    countdownOverlay.style.display = 'flex'; // Show the overlay
-
-    let count = 3;
-    countdownElement.textContent = count;
-    countdownElement.classList.remove('fade-out', 'start'); // Reset classes
-    count--;
-
-    const interval = setInterval(() => {
-        if (onMenu) {
-            clearInterval(interval);
-            return;
-        }
-        if (count > 0) {
-            countdownElement.textContent = count;
-            count--;
-        } else {
-            countdownElement.textContent = 'Start';
-            countdownElement.classList.add('start');
-            clearInterval(interval);
-            setTimeout(() => {
-                countdownElement.classList.add('fade-out');
-                // Hide the countdown overlay after fade-out
-                setTimeout(() => {
-                    countdownOverlay.style.display = 'none';
-                    if (!onMenu) {
-                        inGameControls.style.display = 'block'; // Show the in-game controls if the user is not on the menu
-                        showPattern(arrayPC);
-                    };              
-                }, 500);
-            }, 1000);
-        }
-    }, 1000);
-}
-
-// -----------------------------------------
-// 5. Show pattern and score
-// -----------------------------------------
-
-function showPattern(arrayPC) { 
-    toggleButtons(false);
-    let i = 0;
-    const interval = setInterval(() => {
-        if (i > arrayPC.length - 1 || onMenu) {
-            clearInterval(interval);
-            toggleButtons(true);
-        }
-        switch(arrayPC[i]) {
-            case 0:
-                flashButton("green");
-                playSound(audioFiles.green);
-                break;
-            case 1:
-                flashButton("red");
-                playSound(audioFiles.red);
-                break;
-            case 2:
-                flashButton("blue");
-                playSound(audioFiles.blue);
-                break;
-            case 3:
-                flashButton("yellow");
-                playSound(audioFiles.yellow);
-                break;
-        }
-        i++;
-    }, 480);
-}
-
-function userScore(arrayPC, arrayPlayer) {
-    for(let i = 0; i < arrayPC.length; i++) {
-        maxScore.textContent = i + 1;
-    }
-    for(let i = 0; i < arrayPlayer.length; i++) {
-        currentScore.textContent = i + 1;
-    }
-    if(arrayPC.length === arrayPlayer.length) {
+    // Update score display
+    updateScoreDisplay();
+    
+    // If player successfully completed the sequence
+    if (playerSeq.length === computerSeq.length) {
+      setTimeout(() => {
+        if (GameState.isOnMenu) return;
+        
+        GameState.resetPlayerSequence();
+        GameState.addToComputerSequence();
+        
+        // Reset current score display
         setTimeout(() => {
-            currentScore.textContent = 0;
-        }, 700);
+          DOM.display.currentScore.textContent = '0';
+        }, GAME_CONFIG.SCORE_RESET_DELAY);
+        
+        // Show the next pattern
+        setTimeout(() => {
+          showPattern(GameState.computerSequence);
+        }, GAME_CONFIG.NEXT_SEQUENCE_DELAY);
+      }, GAME_CONFIG.NEXT_SEQUENCE_DELAY);
     }
-}
-
-// -----------------------------------------
-// 6. Lose screen logic
-// -----------------------------------------
-
-function showLoseScreen() {
-    toggleButtons(false);
-    loseScreen.style.display = 'flex';
+  }
+  
+  /**
+   * Updates the score displays
+   */
+  function updateScoreDisplay() {
+    // Update max score (round number)
+    DOM.display.maxScore.textContent = GameState.computerSequence.length;
     
-    // Save the score when the game ends
-    const finalScore = parseInt(maxScore.textContent);
-    saveHighScore(currentPlayer, finalScore);
-}
-
-function resetGame() {
-    isRestartEnabled = false;
-    // Reset score and update display
-    score = 0;
-    currentScore.textContent = 0;
-    maxScore.textContent = score;
-    // Reset game arrays
-    arrayPC = [0];
-    arrayPlayer = [];
-    // Hide the lose screen
-    loseScreen.style.display = 'none';
-    // Restart the game (using the countdown)
-    startCountdown();
+    // Update current progress
+    DOM.display.currentScore.textContent = GameState.playerSequence.length;
+  }
+  
+  /**
+   * Shows the pattern for the player to repeat
+   * @param {Array} sequence - The pattern to display
+   */
+  function showPattern(sequence) {
+    if (GameState.isOnMenu) return;
+    
+    toggleButtons(false);
+    let index = 0;
+    
+    const interval = setInterval(() => {
+      if (index >= sequence.length || GameState.isOnMenu) {
+        clearInterval(interval);
+        toggleButtons(true);
+        return;
+      }
+      
+      const buttonValue = sequence[index];
+      const buttonColor = GAME_CONFIG.BUTTON_COLORS[buttonValue];
+      
+      flashButton(buttonColor);
+      playSound(buttonColor);
+      
+      index++;
+    }, GAME_CONFIG.PATTERN_DELAY);
+  }
+  
+  // -----------------------------------------
+  // 3. Game Flow Management
+  // -----------------------------------------
+  
+  /**
+   * Validates player name and starts the game
+   */
+  function validateAndStartGame() {
+    const name = DOM.display.userInput.value.trim();
+    
+    if (name === "" || name.length > GAME_CONFIG.MAX_NAME_LENGTH) {
+      alert(`Please enter a valid name (1-${GAME_CONFIG.MAX_NAME_LENGTH} characters).`);
+      return;
+    }
+    
+    GameState.currentPlayer = name;
+    GameState.isOnMenu = false;
+    
     setTimeout(() => {
-        isRestartEnabled = true;
-    }, 5000);
+      DOM.containers.startContainer.style.display = "none";
+      startCountdown();
+    }, GAME_CONFIG.NEXT_SEQUENCE_DELAY);
+  }
+  
+  /**
+   * Starts the countdown before gameplay begins
+   */
+  function startCountdown() {
+    if (GameState.isOnMenu) return;
     
-}
-
-tryAgainBtn.addEventListener('click', resetGame);
-
-// -----------------------------------------
-// 7. Restart and return to menu buttons
-// -----------------------------------------
-
-function returnToMenu() {
-    // Reset game state
-    onMenu = true;
-    arrayPC = [0];
-    arrayPlayer = [];
-    currentPlayer = '';
-    score = 0; // Reset score to initial value
-
-    // Reset score display
-    maxScore.textContent = 0;
-    currentScore.textContent = 0;
-
-    // Hide any overlays
-    loseScreen.style.display = 'none';
-    countdownOverlay.style.display = 'none';
-
-    // Disable button interactions
+    DOM.containers.countdownOverlay.style.display = 'flex';
+    
+    let count = GAME_CONFIG.COUNTDOWN_DURATION;
+    DOM.display.countdownElement.textContent = count;
+    DOM.display.countdownElement.classList.remove('fade-out', 'start');
+    
+    count--;
+    
+    const interval = setInterval(() => {
+      if (GameState.isOnMenu) {
+        clearInterval(interval);
+        return;
+      }
+      
+      if (count > 0) {
+        DOM.display.countdownElement.textContent = count;
+        count--;
+      } else {
+        DOM.display.countdownElement.textContent = 'Start';
+        DOM.display.countdownElement.classList.add('start');
+        clearInterval(interval);
+        
+        setTimeout(() => {
+          DOM.display.countdownElement.classList.add('fade-out');
+          
+          setTimeout(() => {
+            DOM.containers.countdownOverlay.style.display = 'none';
+            
+            if (!GameState.isOnMenu) {
+              DOM.containers.inGameControls.style.display = 'block';
+              showPattern(GameState.computerSequence);
+            }
+          }, 500);
+        }, 1000);
+      }
+    }, 1000);
+  }
+  
+  /**
+   * Shows the lose screen and saves the score
+   */
+  function showLoseScreen() {
+    if (GameState.isOnMenu) return;
+    
     toggleButtons(false);
-
-    // Hide the in-game controls
-    inGameControls.style.display = 'none';
-
-    // Show the start screen again and clear the input field
-    startContainer.style.display = 'flex';
-
-    // Clear the input field
-    userInput.value = "";
-}
-
-restartBtn.addEventListener('click', () => {
-    if (!isRestartEnabled) return; 
+    DOM.containers.loseScreen.style.display = 'flex';
+    
+    // Get final score and save it
+    const finalScore = parseInt(DOM.display.maxScore.textContent);
+    saveHighScore(GameState.currentPlayer, finalScore);
+  }
+  
+  /**
+   * Resets the game after losing
+   */
+  function resetGame() {
+    if (GameState.isOnMenu) return;
+    
+    GameState.reset();
+    
+    // Update score displays
+    DOM.display.currentScore.textContent = '0';
+    DOM.display.maxScore.textContent = '0';
+    
+    // Hide lose screen
+    DOM.containers.loseScreen.style.display = 'none';
+    
+    // Start new game with countdown
+    startCountdown();
+  }
+  
+  /**
+   * Handles restart button with cooldown prevention
+   */
+  function handleRestart() {
+    if (!GameState.isRestartEnabled || GameState.isOnMenu) return;
+    
+    GameState.isRestartEnabled = false;
     resetGame();
-});
-
-returnMenuBtn.addEventListener('click', returnToMenu);
-
-// -----------------------------------------
-// 8. LocalStorage and score table
-// -----------------------------------------
-
-function getHighScores() {
-    const scores = localStorage.getItem(HIGH_SCORES_KEY);
-    return scores ? JSON.parse(scores) : [];
-}   
-
-function saveHighScore(playerName, score) {
-    let highScores = getHighScores();
     
-    // Check if player already exists
-    const existingPlayerIndex = highScores.findIndex(entry => entry.name === playerName);
+    // Enable restart button after cooldown
+    setTimeout(() => {
+      GameState.isRestartEnabled = true;
+    }, GAME_CONFIG.RESTART_COOLDOWN);
+  }
+  
+  /**
+   * Returns to the main menu
+   */
+  function returnToMenu() {
+    GameState.isOnMenu = true;
+    GameState.reset();
+    GameState.currentPlayer = '';
     
-    if (existingPlayerIndex !== -1) {
-        // If player exists, update score only if new score is higher
-        if (score > highScores[existingPlayerIndex].score) {
-            highScores[existingPlayerIndex].score = score;
-        }
-    } else {
-        // If player doesn't exist, add new entry
-        highScores.push({ name: playerName, score: score });
+    // Reset displays
+    DOM.display.maxScore.textContent = '0';
+    DOM.display.currentScore.textContent = '0';
+    
+    // Hide game screens
+    DOM.containers.loseScreen.style.display = 'none';
+    DOM.containers.countdownOverlay.style.display = 'none';
+    DOM.containers.inGameControls.style.display = 'none';
+    
+    // Disable buttons
+    toggleButtons(false);
+    
+    // Show start screen
+    DOM.containers.startContainer.style.display = 'flex';
+    
+    // Clear input field
+    DOM.display.userInput.value = "";
+  }
+  
+  // -----------------------------------------
+  // 4. High Scores Management
+  // -----------------------------------------
+  
+  /**
+   * Retrieves high scores from localStorage
+   * @returns {Array} Array of score objects
+   */
+  function getHighScores() {
+    try {
+      const scores = localStorage.getItem(GAME_CONFIG.HIGH_SCORES_KEY);
+      return scores ? JSON.parse(scores) : [];
+    } catch (error) {
+      console.error('Failed to retrieve high scores:', error);
+      return [];
     }
-    
-    // Sort by score (highest first)
-    highScores.sort((a, b) => b.score - a.score);
-    
-    // Save to localStorage
-    localStorage.setItem(HIGH_SCORES_KEY, JSON.stringify(highScores));
-}
-
-// Function to update high scores display
-function updateHighScoresTable() {
-    highScoresTbody.innerHTML = '';
-    
+  }
+  
+  /**
+   * Saves a high score to localStorage
+   * @param {string} playerName - The player's name
+   * @param {number} score - The player's score
+   */
+  function saveHighScore(playerName, score) {
+    try {
+      let highScores = getHighScores();
+      
+      // Find if player already exists
+      const existingPlayerIndex = highScores.findIndex(entry => entry.name === playerName);
+      
+      if (existingPlayerIndex !== -1) {
+        // Update score only if new score is higher
+        if (score > highScores[existingPlayerIndex].score) {
+          highScores[existingPlayerIndex].score = score;
+        }
+      } else {
+        // Add new player
+        highScores.push({ name: playerName, score: score });
+      }
+      
+      // Sort scores (highest first)
+      highScores.sort((a, b) => b.score - a.score);
+      
+      // Save to localStorage
+      localStorage.setItem(GAME_CONFIG.HIGH_SCORES_KEY, JSON.stringify(highScores));
+    } catch (error) {
+      console.error('Failed to save high score:', error);
+    }
+  }
+  
+  /**
+   * Updates the high scores table in the DOM
+   */
+  function updateHighScoresTable() {
     const highScores = getHighScores();
+    const tableBody = DOM.display.highScoresTbody;
     
+    // Clear existing rows
+    tableBody.innerHTML = '';
+    
+    // Add score rows
     highScores.forEach((score, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${score.name}</td>
-            <td>${score.score}</td>
-        `;
-        highScoresTbody.appendChild(row);
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${score.name}</td>
+        <td>${score.score}</td>
+      `;
+      tableBody.appendChild(row);
     });
-}
-
-// Function to show high scores
-function showHighScores() {
+  }
+  
+  /**
+   * Shows the high scores screen
+   */
+  function showHighScores() {
     updateHighScoresTable();
-    highScoresContainer.style.display = 'flex';
-}
-
-// Function to hide high scores
-function hideHighScores() {
-    highScoresContainer.style.display = 'none';
-}
-
-// Eent listeners for the high scores buttons
-showScoresBtn.addEventListener('click', showHighScores);
-showScoresLoseBtn.addEventListener('click', showHighScores);
-closeScoresBtn.addEventListener('click', hideHighScores);
+    DOM.containers.highScoresContainer.style.display = 'flex';
+  }
+  
+  /**
+   * Hides the high scores screen
+   */
+  function hideHighScores() {
+    DOM.containers.highScoresContainer.style.display = 'none';
+  }
+  
+  // -----------------------------------------
+  // Initialize the game
+  // -----------------------------------------
+  function initGame() {
+    initializeButtons();
+  }
+  
+  // Start the game when the page loads
+  document.addEventListener('DOMContentLoaded', initGame);
